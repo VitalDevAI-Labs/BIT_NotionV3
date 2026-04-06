@@ -12,7 +12,7 @@
 
 - **Stage:** `Stage 1 - Core Experience`
 - **Objective:** `Card grid view, type filters, search, add resource form, copy/open actions`
-- **Status:** `Not started`
+- **Status:** `Complete`
 - **Exit Criteria:** `All resources display from Notion, filters and search work, add form creates entries, actions (Open/Copy/Use) functional`
 
 ## Phases
@@ -20,7 +20,7 @@
 | # | Phase | Goal | Status |
 |---|-------|------|--------|
 | 0 | Foundations | Project scaffolding, Notion DB creation, API client, Tailwind + shadcn/ui setup | done |
-| 1 | Core Experience | Card grid view, type filters, search, add resource form, copy/open actions | pending |
+| 1 | Core Experience | Card grid view, type filters, search, add resource form, copy/open actions | done |
 | 2 | Enhancement | Edit/delete CRUD, advanced filters (category, tags, model, popular), table view, sorting, toasts | pending |
 | 3 | Polish & Hardening | PWA manifest, offline cache, dark/light theme toggle, export/import | pending |
 | 4 | Launch | Vercel deployment, real-data validation, bug fixes, performance tuning | pending |
@@ -31,10 +31,11 @@
 |----|------|--------|-------|
 | task-20260406-001 | Scaffold Vite + TS + types + constants + Notion API client | done | Claude Code |
 | task-20260406-002 | shadcn/ui install, dark theme, Vite proxy, Stage 0 complete | done | Claude Code |
-| TBD | useNotionResources hook + ResourceCard + ResourceGrid (V1-REQ-001, V1-REQ-002, V1-REQ-003) | planned | Claude Code |
-| TBD | Header + FilterBar + TypeFilter + SearchInput (V1-REQ-004, V1-REQ-005, V1-REQ-006, V1-REQ-007) | planned | Claude Code |
-| TBD | AddResourceDialog + Form + useCreateResource (V1-REQ-008, V1-REQ-009, V1-REQ-010) | planned | Claude Code |
-| TBD | Type actions + ImprovedMultiSelect + App wire-up (V1-REQ-011 to V1-REQ-016) | planned | Claude Code |
+| task-20260406-003 | useNotionResources hook + ResourceCard + ResourceGrid (V1-REQ-001, V1-REQ-002, V1-REQ-003) | done | Claude Code |
+| task-20260406-004 | Header + FilterBar + TypeFilter + SearchInput (V1-REQ-004, V1-REQ-005, V1-REQ-006, V1-REQ-007) | done | Claude Code |
+| task-20260406-005 | AddResourceDialog + Form + useCreateResource (V1-REQ-008, V1-REQ-009, V1-REQ-010) | done | Claude Code |
+| task-20260406-006 | Type actions + ImprovedMultiSelect + App wire-up (V1-REQ-011 to V1-REQ-016) | done | Claude Code |
+| task-20260406-007 | Fix transformPage crash: defensive property lookup with fallback keys | done | Claude Code |
 
 ## Key Decisions
 

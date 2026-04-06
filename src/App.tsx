@@ -1,24 +1,74 @@
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { useState, useMemo } from 'react';
+
+import type { FilterType, Resource } from '@/types/resource';
+import { useNotionResources } from '@/hooks/useNotionResources';
+import { Header } from '@/components/Header';
+import { FilterBar } from '@/components/FilterBar';
+import { ResourceGrid } from '@/components/ResourceGrid';
+import { AddResourceDialog } from '@/components/AddResourceDialog';
 
 export function App() {
+  const { resources, loading, error, refetch } = useNotionResources();
+  const [activeFilter, setActiveFilter] = useState<FilterType>('All');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [optimisticResources, setOptimisticResources] = useState<Resource[]>([]);
+
+  const allResources = useMemo(
+    () => [...optimisticResources, ...resources],
+    [optimisticResources, resources],
+  );
+
+  const filtered = useMemo(() => {
+    let result = allResources;
+
+    if (activeFilter !== 'All') {
+      result = result.filter((r) => r.type === activeFilter);
+    }
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(
+        (r) =>
+          r.title.toLowerCase().includes(q) ||
+          r.description.toLowerCase().includes(q),
+      );
+    }
+
+    return result;
+  }, [allResources, activeFilter, searchQuery]);
+
+  function handleCreated(resource: Resource) {
+    setOptimisticResources((prev) => [resource, ...prev]);
+    // Re-fetch in background to sync (removes optimistic duplicate by id)
+    refetch();
+  }
+
   return (
     <div className="min-h-screen bg-slate-900 text-slate-50">
-      <div className="max-w-7xl mx-auto px-6 py-8 space-y-4">
-        <h1 className="text-2xl font-bold text-violet-400">AI Bridge Unified</h1>
-        <p className="text-slate-400">Stage 0 complete — scaffold, Tailwind v4, shadcn/ui ✓</p>
-        <div className="flex items-center gap-3">
-          <Button>Primary Button</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="destructive">Destructive</Button>
-        </div>
-        <div className="flex items-center gap-2">
-          <Badge className="bg-blue-500/20 text-blue-400">Chat Link</Badge>
-          <Badge className="bg-green-500/20 text-green-400">Prompt</Badge>
-          <Badge className="bg-violet-500/20 text-violet-400">Agent</Badge>
-        </div>
+      <div className="max-w-7xl mx-auto px-6 space-y-6">
+        <Header onAddClick={() => setDialogOpen(true)} resourceCount={allResources.length} />
+
+        <FilterBar
+          activeFilter={activeFilter}
+          onFilterChange={setActiveFilter}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+        />
+
+        <ResourceGrid
+          resources={filtered}
+          loading={loading}
+          error={error}
+          searchQuery={searchQuery}
+        />
       </div>
+
+      <AddResourceDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onCreated={handleCreated}
+      />
     </div>
-  )
+  );
 }
