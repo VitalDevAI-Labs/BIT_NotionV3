@@ -14,4 +14,15 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    proxy: {
+      // Proxy Notion API calls in dev to avoid CORS issues
+      // Usage: fetch('/notion-api/v1/...') instead of https://api.notion.com/v1/...
+      '/notion-api': {
+        target: 'https://api.notion.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/notion-api/, ''),
+      },
+    },
+  },
 })

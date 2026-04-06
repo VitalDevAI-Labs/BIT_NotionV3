@@ -2,7 +2,12 @@ import type { Resource, CreateResourceInput, UpdateResourceInput } from '@/types
 import type { NotionPage, NotionQueryResponse } from '@/types/notion';
 import { extractPlainText } from '@/lib/utils';
 
-const NOTION_API_BASE = 'https://api.notion.com/v1';
+// In dev, Vite proxies /notion-api → https://api.notion.com to avoid CORS issues.
+// In production (Vercel), Notion API supports CORS from browser directly.
+const NOTION_API_BASE = import.meta.env.DEV
+  ? '/notion-api/v1'
+  : 'https://api.notion.com/v1';
+
 const NOTION_VERSION = '2022-06-28';
 
 function getApiKey(): string {

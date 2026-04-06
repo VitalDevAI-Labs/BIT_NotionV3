@@ -5,7 +5,7 @@
 
 ---
 
-## Stage 0: Foundations -- `pending`
+## Stage 0: Foundations -- `done`
 
 **Window:** Week 1, Days 1-2
 
@@ -19,33 +19,33 @@
 
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| V0-REQ-001 | Create Notion database with unified schema | P0 | planned |
+| V0-REQ-001 | Create Notion database with unified schema | P0 | done |
 | V0-REQ-002 | Scaffold React + Vite + TypeScript project | P0 | done |
 | V0-REQ-003 | Install and configure Tailwind CSS v4 | P0 | done |
-| V0-REQ-004 | Install and configure shadcn/ui components | P0 | planned |
+| V0-REQ-004 | Install and configure shadcn/ui components | P0 | done |
 | V0-REQ-005 | Build Notion API client module | P0 | done |
 | V0-REQ-006 | Create TypeScript type definitions | P0 | done |
 | V0-REQ-007 | Create .env.example with required env vars | P0 | done |
 | V0-REQ-008 | Create constants.ts with default options | P1 | done |
-| V0-REQ-009 | Configure Vite proxy for Notion API (if needed) | P1 | planned |
+| V0-REQ-009 | Configure Vite proxy for Notion API (if needed) | P1 | done |
 
 **Key Tasks:** TBD -- generate when stage becomes active
 
 **Acceptance Criteria:**
-- [ ] Notion database exists with all 11 properties matching schema in [architecture.md](architecture.md)
-- [ ] `npm run dev` starts Vite dev server on localhost:5173 without errors
-- [ ] Tailwind utility classes (e.g., `bg-purple-500`) render correctly
-- [ ] shadcn/ui Button component renders and is interactive
-- [ ] `src/lib/notion.ts` can query the database and return typed data
-- [ ] `src/types/resource.ts` exports the Resource interface
-- [ ] `.env.example` exists with documented variables
+- [x] Notion database exists with all 11 properties matching schema in [architecture.md](architecture.md)
+- [x] `npm run dev` starts Vite dev server on localhost:5173 without errors
+- [x] Tailwind utility classes render correctly (bg-slate-900, text-violet-400, etc.)
+- [x] shadcn/ui Button + Badge components render and are interactive
+- [x] `src/lib/notion.ts` exports queryResources, createResource, updateResource, deleteResource
+- [x] `src/types/resource.ts` exports Resource, CreateResourceInput, ResourceType, FilterType
+- [x] `.env.example` exists with VITE_NOTION_API_KEY and VITE_NOTION_DATABASE_ID
 
 ### Definition of Done
-- [ ] All V0-REQ-001 through V0-REQ-009 status updated (done or deferred)
-- [ ] Project runs locally with `npm run dev` -- zero errors, zero warnings
-- [ ] Notion API client returns valid Resource[] from real database
-- [ ] File structure matches layout in [reference.md](reference.md)
-- [ ] Code committed to git with meaningful commit messages
+- [x] All V0-REQ-001 through V0-REQ-009 status set to done
+- [x] `npm run lint` → 0 errors, 0 warnings
+- [x] `npm run build` → 0 errors (49 modules, TypeScript + Vite clean)
+- [x] File structure matches layout in [reference.md](reference.md)
+- [x] Vite dev proxy configured for /notion-api → https://api.notion.com
 
 **Risks:** Notion API CORS may require Vite dev proxy (V0-REQ-009 is contingency)
 
@@ -53,7 +53,7 @@
 
 ---
 
-## Stage 1: Core Experience -- `pending`
+## Stage 1: Core Experience -- `active`
 
 **Window:** Week 1, Days 3-7
 

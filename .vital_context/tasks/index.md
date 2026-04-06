@@ -4,7 +4,8 @@ All completed and active task logs, newest first.
 
 | ID | Title | Req IDs | Status | Date |
 |----|-------|---------|--------|------|
-| task-20260406-001 | Scaffold React + Vite + TypeScript project | V0-REQ-002, V0-REQ-003, V0-REQ-005, V0-REQ-006, V0-REQ-007, V0-REQ-008 | done | 2026-04-06 |
+| task-20260406-002 | shadcn/ui install, dark theme, Vite proxy, Stage 0 wrap-up | V0-REQ-004, V0-REQ-009 | done | 2026-04-06 |
+| task-20260406-001 | Scaffold Vite + TS + types + constants + Notion API client | V0-REQ-002, V0-REQ-003, V0-REQ-005, V0-REQ-006, V0-REQ-007, V0-REQ-008 | done | 2026-04-06 |
 
 ---
 

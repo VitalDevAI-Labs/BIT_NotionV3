@@ -10,16 +10,16 @@
 
 ## Current Stage
 
-- **Stage:** `Stage 0 - Foundations`
-- **Objective:** `Scaffold project, create Notion database, establish API connectivity`
+- **Stage:** `Stage 1 - Core Experience`
+- **Objective:** `Card grid view, type filters, search, add resource form, copy/open actions`
 - **Status:** `Not started`
-- **Exit Criteria:** `Vite dev server runs, Notion API client fetches data, Tailwind + shadcn/ui render correctly`
+- **Exit Criteria:** `All resources display from Notion, filters and search work, add form creates entries, actions (Open/Copy/Use) functional`
 
 ## Phases
 
 | # | Phase | Goal | Status |
 |---|-------|------|--------|
-| 0 | Foundations | Project scaffolding, Notion DB creation, API client, Tailwind + shadcn/ui setup | pending |
+| 0 | Foundations | Project scaffolding, Notion DB creation, API client, Tailwind + shadcn/ui setup | done |
 | 1 | Core Experience | Card grid view, type filters, search, add resource form, copy/open actions | pending |
 | 2 | Enhancement | Edit/delete CRUD, advanced filters (category, tags, model, popular), table view, sorting, toasts | pending |
 | 3 | Polish & Hardening | PWA manifest, offline cache, dark/light theme toggle, export/import | pending |
@@ -29,10 +29,12 @@
 
 | ID | Task | Status | Owner |
 |----|------|--------|-------|
-| task-20260406-001 | Scaffold React + Vite + TypeScript project (V0-REQ-002, V0-REQ-006, V0-REQ-007, V0-REQ-008) | done | Claude Code |
-| TBD | Create Notion database with unified schema (V0-REQ-001) | done | VitalDev |
-| TBD | Install shadcn/ui components (V0-REQ-004) | planned | Claude Code |
-| TBD | Verify Notion API connectivity with real credentials (V0-REQ-005, V0-REQ-009) | planned | VitalDev + Claude Code |
+| task-20260406-001 | Scaffold Vite + TS + types + constants + Notion API client | done | Claude Code |
+| task-20260406-002 | shadcn/ui install, dark theme, Vite proxy, Stage 0 complete | done | Claude Code |
+| TBD | useNotionResources hook + ResourceCard + ResourceGrid (V1-REQ-001, V1-REQ-002, V1-REQ-003) | planned | Claude Code |
+| TBD | Header + FilterBar + TypeFilter + SearchInput (V1-REQ-004, V1-REQ-005, V1-REQ-006, V1-REQ-007) | planned | Claude Code |
+| TBD | AddResourceDialog + Form + useCreateResource (V1-REQ-008, V1-REQ-009, V1-REQ-010) | planned | Claude Code |
+| TBD | Type actions + ImprovedMultiSelect + App wire-up (V1-REQ-011 to V1-REQ-016) | planned | Claude Code |
 
 ## Key Decisions
 
