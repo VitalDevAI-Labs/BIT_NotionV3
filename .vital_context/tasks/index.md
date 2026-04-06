@@ -4,6 +4,11 @@ All completed and active task logs, newest first.
 
 | ID | Title | Req IDs | Status | Date |
 |----|-------|---------|--------|------|
+| task-20260406-007 | Fix transformPage crash — defensive Notion property lookup | — | done | 2026-04-06 |
+| task-20260406-006 | Type actions + ImprovedMultiSelect + App wire-up | V1-REQ-011, V1-REQ-012, V1-REQ-013, V1-REQ-014, V1-REQ-015, V1-REQ-016 | done | 2026-04-06 |
+| task-20260406-005 | AddResourceDialog + AddResourceForm + useCreateResource | V1-REQ-008, V1-REQ-009, V1-REQ-010 | done | 2026-04-06 |
+| task-20260406-004 | Header + FilterBar + TypeFilter + SearchInput | V1-REQ-004, V1-REQ-005, V1-REQ-006, V1-REQ-007 | done | 2026-04-06 |
+| task-20260406-003 | useNotionResources + ResourceCard + ResourceGrid | V1-REQ-001, V1-REQ-002, V1-REQ-003 | done | 2026-04-06 |
 | task-20260406-002 | shadcn/ui install, dark theme, Vite proxy, Stage 0 wrap-up | V0-REQ-004, V0-REQ-009 | done | 2026-04-06 |
 | task-20260406-001 | Scaffold Vite + TS + types + constants + Notion API client | V0-REQ-002, V0-REQ-003, V0-REQ-005, V0-REQ-006, V0-REQ-007, V0-REQ-008 | done | 2026-04-06 |
 
