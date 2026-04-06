@@ -45,7 +45,7 @@ function transformPage(page: NotionPage): Resource {
   const urlProp   = prop(['URL', 'url', 'Url', 'Link', 'link']);
   const promptProp = prop(['Prompt Text', 'prompt_text', 'PromptText', 'Prompt', 'prompt']);
   const modelProp  = prop(['Model', 'model']);
-  const popularProp = prop(['Is Popular', 'is_popular', 'IsPopular', 'Popular', 'popular']);
+  const popularProp = prop(['IsPopular', 'Is Popular', 'is_popular', 'Popular', 'popular']);
 
   return {
     id: page.id,
@@ -86,9 +86,9 @@ export async function createResource(input: CreateResourceInput): Promise<Resour
     Description: { rich_text: [{ text: { content: input.description ?? '' } }] },
     Categories: { multi_select: (input.categories ?? []).map((name) => ({ name })) },
     Tags: { multi_select: (input.tags ?? []).map((name) => ({ name })) },
-    'Is Popular': { checkbox: input.isPopular ?? false },
   };
 
+  if (input.isPopular !== undefined) properties['IsPopular'] = { checkbox: input.isPopular };
   if (input.url) properties['URL'] = { url: input.url };
   if (input.promptText) properties['Prompt Text'] = { rich_text: [{ text: { content: input.promptText } }] };
   if (input.model) properties['Model'] = { select: { name: input.model } };
