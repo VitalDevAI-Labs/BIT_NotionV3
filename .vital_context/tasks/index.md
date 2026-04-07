@@ -4,6 +4,8 @@ All completed and active task logs, newest first.
 
 | ID | Title | Req IDs | Status | Date |
 |----|-------|---------|--------|------|
+| task-20260406-009 | Stage 2: advanced filters + quick menu | V2-REQ-005, V2-REQ-006, V2-REQ-007, V2-REQ-008, V2-REQ-012, V2-REQ-014 | done | 2026-04-06 |
+| task-20260406-008 | Stage 2: toast system + CRUD hooks + dialogs | V2-REQ-001, V2-REQ-002, V2-REQ-003, V2-REQ-004, V2-REQ-013 | done | 2026-04-06 |
 | task-20260406-007 | Fix transformPage crash — defensive Notion property lookup | — | done | 2026-04-06 |
 | task-20260406-006 | Type actions + ImprovedMultiSelect + App wire-up | V1-REQ-011, V1-REQ-012, V1-REQ-013, V1-REQ-014, V1-REQ-015, V1-REQ-016 | done | 2026-04-06 |
 | task-20260406-005 | AddResourceDialog + AddResourceForm + useCreateResource | V1-REQ-008, V1-REQ-009, V1-REQ-010 | done | 2026-04-06 |
