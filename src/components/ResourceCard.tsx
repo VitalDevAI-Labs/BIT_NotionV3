@@ -1,18 +1,27 @@
 import { useState } from 'react';
 
-import { ExternalLink, Copy, Bot, Check } from 'lucide-react';
+import { ExternalLink, Copy, Bot, Check, MoreVertical } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { TYPE_COLORS, TYPE_BORDER_ACCENT } from '@/lib/constants';
 import type { Resource } from '@/types/resource';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
 interface ResourceCardProps {
   resource: Resource;
+  onEdit: (resource: Resource) => void;
+  onDelete: (resource: Resource) => void;
 }
 
-export function ResourceCard({ resource }: ResourceCardProps) {
+export function ResourceCard({ resource, onEdit, onDelete }: ResourceCardProps) {
   const [copied, setCopied] = useState(false);
 
   function handleOpen() {
@@ -36,7 +45,7 @@ export function ResourceCard({ resource }: ResourceCardProps) {
         TYPE_BORDER_ACCENT[resource.type],
       )}
     >
-      {/* Top row: type badge + model */}
+      {/* Top row: type badge + model + menu */}
       <div className="flex items-center justify-between gap-2">
         <Badge className={cn('text-xs font-medium border', TYPE_COLORS[resource.type])}>
           <span className="sr-only">Type: </span>
@@ -45,6 +54,23 @@ export function ResourceCard({ resource }: ResourceCardProps) {
         {resource.model && (
           <span className="text-xs text-slate-500 truncate">{resource.model}</span>
         )}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-6 w-6 text-slate-400 hover:text-slate-200 ml-auto">
+              <MoreVertical className="h-4 w-4" />
+              <span className="sr-only">Actions</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="bg-slate-800 border-slate-700">
+            <DropdownMenuItem onClick={() => onEdit(resource)} className="text-slate-200 cursor-pointer hover:bg-slate-700">
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuSeparator className="bg-slate-700" />
+            <DropdownMenuItem onClick={() => onDelete(resource)} className="text-red-400 cursor-pointer hover:bg-slate-700">
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {/* Title */}

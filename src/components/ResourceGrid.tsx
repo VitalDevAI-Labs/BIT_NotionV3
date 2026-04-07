@@ -8,9 +8,11 @@ interface ResourceGridProps {
   loading: boolean;
   error: string | null;
   searchQuery: string;
+  onEdit: (resource: Resource) => void;
+  onDelete: (resource: Resource) => void;
 }
 
-export function ResourceGrid({ resources, loading, error, searchQuery }: ResourceGridProps) {
+export function ResourceGrid({ resources, loading, error, searchQuery, onEdit, onDelete }: ResourceGridProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-24 text-slate-400">
@@ -42,7 +44,7 @@ export function ResourceGrid({ resources, loading, error, searchQuery }: Resourc
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {resources.map((resource) => (
-        <ResourceCard key={resource.id} resource={resource} />
+        <ResourceCard key={resource.id} resource={resource} onEdit={onEdit} onDelete={onDelete} />
       ))}
     </div>
   );

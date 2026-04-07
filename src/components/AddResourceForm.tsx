@@ -16,6 +16,8 @@ interface AddResourceFormProps {
   loading: boolean;
   error: string | null;
   onCancel: () => void;
+  initialValues?: Partial<CreateResourceInput>;
+  submitLabel?: string;
 }
 
 const DEFAULT_FORM: CreateResourceInput = {
@@ -30,8 +32,8 @@ const DEFAULT_FORM: CreateResourceInput = {
   isPopular: false,
 };
 
-export function AddResourceForm({ onSubmit, loading, error, onCancel }: AddResourceFormProps) {
-  const [form, setForm] = useState<CreateResourceInput>(DEFAULT_FORM);
+export function AddResourceForm({ onSubmit, loading, error, onCancel, initialValues, submitLabel = 'Add Resource' }: AddResourceFormProps) {
+  const [form, setForm] = useState<CreateResourceInput>(initialValues ? { ...DEFAULT_FORM, ...initialValues } : DEFAULT_FORM);
 
   function set<K extends keyof CreateResourceInput>(key: K, value: CreateResourceInput[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -189,7 +191,7 @@ export function AddResourceForm({ onSubmit, loading, error, onCancel }: AddResou
         </Button>
         <Button type="submit" disabled={loading || !form.title.trim()} className="bg-violet-600 hover:bg-violet-500 text-white gap-2">
           {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-          {loading ? 'Saving...' : 'Add Resource'}
+          {loading ? 'Saving...' : submitLabel}
         </Button>
       </div>
     </form>
