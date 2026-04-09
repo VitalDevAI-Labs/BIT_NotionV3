@@ -4,12 +4,14 @@ import { Toaster, toast } from 'sonner';
 
 import type { FilterType, Resource } from '@/types/resource';
 import { useNotionResources } from '@/hooks/useNotionResources';
+import { hasCredentials } from '@/lib/notion';
 import { Header } from '@/components/Header';
 import { FilterBar } from '@/components/FilterBar';
 import { ResourceGrid } from '@/components/ResourceGrid';
 import { AddResourceDialog } from '@/components/AddResourceDialog';
 import { EditResourceDialog } from '@/components/EditResourceDialog';
 import { DeleteConfirmDialog } from '@/components/DeleteConfirmDialog';
+import { ConfigDialog } from '@/components/ConfigDialog';
 
 export function App() {
   const { resources, loading, error, refetch } = useNotionResources();
@@ -21,6 +23,9 @@ export function App() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedModel, setSelectedModel] = useState('');
   const [popularOnly, setPopularOnly] = useState(false);
+
+  // Config dialog — auto-opens if no credentials found
+  const [configOpen, setConfigOpen] = useState(() => !hasCredentials());
 
   // Dialog state
   const [addDialogOpen, setAddDialogOpen] = useState(false);
@@ -120,7 +125,11 @@ export function App() {
   return (
     <div className="min-h-screen bg-slate-900 text-slate-50">
       <div className="max-w-7xl mx-auto px-6 space-y-6 py-6">
-        <Header onAddClick={() => setAddDialogOpen(true)} resourceCount={allResources.length} />
+        <Header
+          onAddClick={() => setAddDialogOpen(true)}
+          onConfigClick={() => setConfigOpen(true)}
+          resourceCount={allResources.length}
+        />
 
         <FilterBar
           activeFilter={activeFilter}
@@ -167,6 +176,12 @@ export function App() {
         resource={deleteResource}
         onOpenChange={setDeleteDialogOpen}
         onDeleted={handleDeleted}
+      />
+
+      <ConfigDialog
+        open={configOpen}
+        onOpenChange={setConfigOpen}
+        onSaved={refetch}
       />
 
       <Toaster position="bottom-right" />

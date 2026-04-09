@@ -10,12 +10,24 @@ const NOTION_API_BASE = import.meta.env.DEV
 
 const NOTION_VERSION = '2022-06-28';
 
+const LS_API_KEY = 'notion_api_key';
+const LS_DB_ID = 'notion_database_id';
+
 function getApiKey(): string {
-  return import.meta.env.VITE_NOTION_API_KEY ?? '';
+  return localStorage.getItem(LS_API_KEY) || import.meta.env.VITE_NOTION_API_KEY || '';
 }
 
 function getDatabaseId(): string {
-  return import.meta.env.VITE_NOTION_DATABASE_ID ?? '';
+  return localStorage.getItem(LS_DB_ID) || import.meta.env.VITE_NOTION_DATABASE_ID || '';
+}
+
+export function hasCredentials(): boolean {
+  return !!(getApiKey() && getDatabaseId());
+}
+
+export function saveCredentials(apiKey: string, dbId: string): void {
+  localStorage.setItem(LS_API_KEY, apiKey);
+  localStorage.setItem(LS_DB_ID, dbId);
 }
 
 function notionHeaders(): HeadersInit {
@@ -50,7 +62,7 @@ function transformPage(page: NotionPage): Resource {
   return {
     id: page.id,
     title: titleProp?.title ? extractPlainText(titleProp.title) : (titleProp?.rich_text ? extractPlainText(titleProp.rich_text) : 'Untitled'),
-    type: (typeProp?.select?.name ?? 'Prompt') as Resource['type'],
+    type: (typeProp?.select?.name === 'Prompt' ? 'Agent' : (typeProp?.select?.name ?? 'Agent')) as Resource['type'],
     description: descProp?.rich_text ? extractPlainText(descProp.rich_text) : '',
     categories: catProp?.multi_select?.map((c: { name: string }) => c.name) ?? [],
     tags: tagProp?.multi_select?.map((t: { name: string }) => t.name) ?? [],

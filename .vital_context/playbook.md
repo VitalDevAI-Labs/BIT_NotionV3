@@ -143,6 +143,8 @@
 | V2-REQ-012 | QuickActionsMenu component | P2 | done |
 | V2-REQ-013 | Toast notification system | P2 | done |
 | V2-REQ-014 | Combined filter logic | P1 | done |
+| V2-REQ-015 | Merge Prompt type into Agent (2 types: Agent + Chat Link) | P1 | done |
+| V2-REQ-016 | Runtime Config Dialog (Notion key + DB ID via localStorage) | P1 | done |
 
 **Key Tasks:** TBD -- generate when stage becomes active
 
@@ -156,13 +158,19 @@
 - [x] Quick actions menu works on each card
 - [x] Toasts appear for all user actions (copy, save, delete, errors)
 - [x] All filters combine correctly (type + category + tags + model + popular + search)
+- [x] Type filter shows only All / Chat Links / Agents (Prompt merged into Agent)
+- [x] Legacy Notion records with type "Prompt" render as Agent cards
+- [x] Agent cards show "Open URL" + copy icon when both URL and promptText present
+- [x] Config dialog accessible via gear icon; saves Notion credentials to localStorage
+- [x] App auto-opens Config dialog on first load if no credentials found
 
 ### Definition of Done
-- [x] V2-REQ-001 to 008, 012 to 014 status set to `done`
+- [x] V2-REQ-001 to 008, 012 to 016 status set to `done`
 - [x] User can edit any existing resource without visiting Notion
 - [x] User can delete resources with confirmation
 - [x] All filter combinations work together without conflict
-- [ ] Table view and card view both render correctly (table view deferred to next sprint)
+- [ ] Table view and card view both render correctly (V2-REQ-009/010/011 deferred to next sprint)
+- [x] Type merge and Config Dialog implemented (V2-REQ-015, V2-REQ-016)
 - [x] Toast notifications provide feedback for every action
 - [x] No regressions in Stage 0 or Stage 1 functionality
 - [x] Code committed and pushed
@@ -272,7 +280,7 @@
 |-------|-------|-------|
 | V0-REQ-001 to V0-REQ-009 | Stage 0: Foundations | 9 |
 | V1-REQ-001 to V1-REQ-016 | Stage 1: Core Experience | 16 |
-| V2-REQ-001 to V2-REQ-014 | Stage 2: Enhancement | 14 |
+| V2-REQ-001 to V2-REQ-016 | Stage 2: Enhancement | 16 |
 | V3-REQ-001 to V3-REQ-010 | Stage 3: Polish & Hardening | 10 |
 | V4-REQ-001 to V4-REQ-005 | Stage 4: Launch | 5 |
-| **Total** | | **54** |
+| **Total** | | **56** |

@@ -37,6 +37,7 @@
 | task-20260406-006 | Type actions + ImprovedMultiSelect + App wire-up (V1-REQ-011 to V1-REQ-016) | done | Claude Code |
 | task-20260406-008 | Stage 2: toast system, CRUD hooks, dialogs | done | Claude Code |
 | task-20260406-009 | Stage 2: filters (category, tags, model, popular), quick menu | done | Claude Code |
+| task-20260408-010 | Stage 2 fix: Prompt→Agent type merge + runtime Config Dialog | done | Claude Code |
 | task-20260406-007 | Fix transformPage crash: defensive property lookup with fallback keys | done | Claude Code |
 
 ## Key Decisions

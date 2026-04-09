@@ -22,7 +22,7 @@ interface AddResourceFormProps {
 
 const DEFAULT_FORM: CreateResourceInput = {
   title: '',
-  type: 'Prompt',
+  type: 'Agent',
   description: '',
   categories: [],
   tags: [],
@@ -100,32 +100,32 @@ export function AddResourceForm({ onSubmit, loading, error, onCancel, initialVal
         />
       </div>
 
-      {/* URL (Chat Link only) */}
-      {form.type === 'Chat Link' && (
+      {/* URL (Chat Link required, Agent optional) */}
+      {(form.type === 'Chat Link' || form.type === 'Agent') && (
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="url" className="text-slate-200">URL</Label>
+          <Label htmlFor="url" className="text-slate-200">
+            URL{form.type === 'Agent' && <span className="text-slate-500 font-normal"> (optional)</span>}
+          </Label>
           <Input
             id="url"
             type="url"
             value={form.url ?? ''}
             onChange={(e) => set('url', e.target.value)}
-            placeholder="https://chat.openai.com/..."
+            placeholder={form.type === 'Agent' ? 'https://... (optional link)' : 'https://chat.openai.com/...'}
             className="bg-slate-900 border-slate-700 text-slate-50 placeholder:text-slate-500 focus-visible:ring-violet-500"
           />
         </div>
       )}
 
-      {/* Prompt text (Prompt + Agent) */}
-      {(form.type === 'Prompt' || form.type === 'Agent') && (
+      {/* Agent Context (Agent only) */}
+      {form.type === 'Agent' && (
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="promptText" className="text-slate-200">
-            {form.type === 'Agent' ? 'Agent Context' : 'Prompt Text'}
-          </Label>
+          <Label htmlFor="promptText" className="text-slate-200">Agent Context</Label>
           <Textarea
             id="promptText"
             value={form.promptText ?? ''}
             onChange={(e) => set('promptText', e.target.value)}
-            placeholder={form.type === 'Agent' ? 'You are a senior React developer...' : 'Write a...'}
+            placeholder="You are a senior React developer..."
             rows={4}
             className="bg-slate-900 border-slate-700 text-slate-50 placeholder:text-slate-500 focus-visible:ring-violet-500 resize-none font-mono text-sm"
           />

@@ -1,5 +1,5 @@
 export type ResourceType = 'Chat Link' | 'Prompt' | 'Agent';
-export type FilterType = 'All' | ResourceType;
+export type FilterType = 'All' | 'Agent' | 'Chat Link';
 
 export interface Resource {
   id: string;

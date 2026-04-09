@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { ExternalLink, Copy, Bot, Check, MoreVertical } from 'lucide-react';
+import { ExternalLink, Copy, Check, MoreVertical } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { TYPE_COLORS, TYPE_BORDER_ACCENT } from '@/lib/constants';
@@ -98,36 +98,36 @@ export function ResourceCard({ resource, onEdit, onDelete }: ResourceCardProps) 
       )}
 
       {/* Action button */}
-      <div className="pt-1">
-        {resource.type === 'Chat Link' && (
+      {resource.type === 'Chat Link' && (
+        <div className="pt-1">
           <Button size="sm" variant="secondary" onClick={handleOpen} className="w-full gap-2">
             <ExternalLink className="h-3.5 w-3.5" />
             Open Chat
           </Button>
-        )}
-        {resource.type === 'Prompt' && (
-          <Button
-            size="sm"
-            variant="secondary"
-            onClick={() => handleCopy(resource.promptText ?? resource.title)}
-            className="w-full gap-2"
-          >
-            {copied ? <Check className="h-3.5 w-3.5 text-green-400" /> : <Copy className="h-3.5 w-3.5" />}
-            {copied ? 'Copied!' : 'Copy Prompt'}
-          </Button>
-        )}
-        {resource.type === 'Agent' && (
-          <Button
-            size="sm"
-            variant="secondary"
-            onClick={() => handleCopy(resource.promptText ?? resource.description ?? resource.title)}
-            className="w-full gap-2"
-          >
-            {copied ? <Check className="h-3.5 w-3.5 text-green-400" /> : <Bot className="h-3.5 w-3.5" />}
-            {copied ? 'Copied!' : 'Use Agent'}
-          </Button>
-        )}
-      </div>
+        </div>
+      )}
+      {resource.type === 'Agent' && (resource.url || resource.promptText) && (
+        <div className="flex gap-2 pt-1">
+          {resource.url && (
+            <Button size="sm" variant="secondary" onClick={handleOpen} className={resource.promptText ? 'flex-1 gap-2' : 'w-full gap-2'}>
+              <ExternalLink className="h-3.5 w-3.5" />
+              Open URL
+            </Button>
+          )}
+          {resource.promptText && (
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() => handleCopy(resource.promptText!)}
+              className={resource.url ? 'px-3' : 'w-full gap-2'}
+              title="Copy prompt text"
+            >
+              {copied ? <Check className="h-3.5 w-3.5 text-green-400" /> : <Copy className="h-3.5 w-3.5" />}
+              {!resource.url && (copied ? 'Copied!' : 'Copy Prompt')}
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
