@@ -10,12 +10,24 @@ const NOTION_API_BASE = import.meta.env.DEV
 
 const NOTION_VERSION = '2022-06-28';
 
+const LS_API_KEY = 'notion_api_key';
+const LS_DB_ID = 'notion_database_id';
+
 function getApiKey(): string {
-  return import.meta.env.VITE_NOTION_API_KEY ?? '';
+  return localStorage.getItem(LS_API_KEY) || import.meta.env.VITE_NOTION_API_KEY || '';
 }
 
 function getDatabaseId(): string {
-  return import.meta.env.VITE_NOTION_DATABASE_ID ?? '';
+  return localStorage.getItem(LS_DB_ID) || import.meta.env.VITE_NOTION_DATABASE_ID || '';
+}
+
+export function hasCredentials(): boolean {
+  return !!(getApiKey() && getDatabaseId());
+}
+
+export function saveCredentials(apiKey: string, dbId: string): void {
+  localStorage.setItem(LS_API_KEY, apiKey);
+  localStorage.setItem(LS_DB_ID, dbId);
 }
 
 function notionHeaders(): HeadersInit {
@@ -27,18 +39,37 @@ function notionHeaders(): HeadersInit {
 }
 
 function transformPage(page: NotionPage): Resource {
-  const p = page.properties;
+  // Use a loosely-typed alias so we can safely access any property name
+  // (Notion property names are case-sensitive and may differ from the schema)
+  const p = page.properties as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+  // Helper: first matching property key from a list of candidates
+  function prop(keys: string[]) {
+    for (const k of keys) if (p[k] !== undefined) return p[k];
+    return undefined;
+  }
+
+  const titleProp = prop(['Title', 'title', 'Name', 'name']);
+  const typeProp  = prop(['Type', 'type']);
+  const descProp  = prop(['Description', 'description']);
+  const catProp   = prop(['Categories', 'categories', 'Category', 'category']);
+  const tagProp   = prop(['Tags', 'tags', 'Tag', 'tag']);
+  const urlProp   = prop(['URL', 'url', 'Url', 'Link', 'link']);
+  const promptProp = prop(['Prompt Text', 'prompt_text', 'PromptText', 'Prompt', 'prompt']);
+  const modelProp  = prop(['Model', 'model']);
+  const popularProp = prop(['IsPopular', 'Is Popular', 'is_popular', 'Popular', 'popular']);
+
   return {
     id: page.id,
-    title: extractPlainText(p.Title.title),
-    type: (p.Type.select?.name ?? 'Prompt') as Resource['type'],
-    description: extractPlainText(p.Description.rich_text),
-    categories: p.Categories.multi_select.map((c) => c.name),
-    tags: p.Tags.multi_select.map((t) => t.name),
-    url: p.URL.url ?? undefined,
-    promptText: extractPlainText(p['Prompt Text'].rich_text) || undefined,
-    model: p.Model.select?.name ?? undefined,
-    isPopular: p['Is Popular'].checkbox,
+    title: titleProp?.title ? extractPlainText(titleProp.title) : (titleProp?.rich_text ? extractPlainText(titleProp.rich_text) : 'Untitled'),
+    type: (typeProp?.select?.name === 'Prompt' ? 'Agent' : (typeProp?.select?.name ?? 'Agent')) as Resource['type'],
+    description: descProp?.rich_text ? extractPlainText(descProp.rich_text) : '',
+    categories: catProp?.multi_select?.map((c: { name: string }) => c.name) ?? [],
+    tags: tagProp?.multi_select?.map((t: { name: string }) => t.name) ?? [],
+    url: urlProp?.url ?? undefined,
+    promptText: promptProp?.rich_text ? (extractPlainText(promptProp.rich_text) || undefined) : undefined,
+    model: modelProp?.select?.name ?? undefined,
+    isPopular: popularProp?.checkbox ?? false,
     createdAt: page.created_time,
     lastEditedAt: page.last_edited_time,
   };
@@ -67,9 +98,9 @@ export async function createResource(input: CreateResourceInput): Promise<Resour
     Description: { rich_text: [{ text: { content: input.description ?? '' } }] },
     Categories: { multi_select: (input.categories ?? []).map((name) => ({ name })) },
     Tags: { multi_select: (input.tags ?? []).map((name) => ({ name })) },
-    'Is Popular': { checkbox: input.isPopular ?? false },
   };
 
+  if (input.isPopular !== undefined) properties['IsPopular'] = { checkbox: input.isPopular };
   if (input.url) properties['URL'] = { url: input.url };
   if (input.promptText) properties['Prompt Text'] = { rich_text: [{ text: { content: input.promptText } }] };
   if (input.model) properties['Model'] = { select: { name: input.model } };
@@ -100,7 +131,7 @@ export async function updateResource(input: UpdateResourceInput): Promise<Resour
   if (input.url !== undefined) properties['URL'] = { url: input.url };
   if (input.promptText !== undefined) properties['Prompt Text'] = { rich_text: [{ text: { content: input.promptText } }] };
   if (input.model !== undefined) properties['Model'] = { select: { name: input.model } };
-  if (input.isPopular !== undefined) properties['Is Popular'] = { checkbox: input.isPopular };
+  if (input.isPopular !== undefined) properties['IsPopular'] = { checkbox: input.isPopular };
 
   const res = await fetch(`${NOTION_API_BASE}/pages/${input.id}`, {
     method: 'PATCH',
