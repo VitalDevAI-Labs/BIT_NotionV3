@@ -3,10 +3,7 @@ import type { NotionPage, NotionQueryResponse } from '@/types/notion';
 import { extractPlainText } from '@/lib/utils';
 
 // In dev, Vite proxies /notion-api → https://api.notion.com to avoid CORS issues.
-// In production (Vercel), Notion API supports CORS from browser directly.
-const NOTION_API_BASE = import.meta.env.DEV
-  ? '/notion-api/v1'
-  : 'https://api.notion.com/v1';
+// In production (Vercel), requests route through /api/notion-proxy serverless function.
 
 const NOTION_VERSION = '2022-06-28';
 
@@ -36,6 +33,34 @@ function notionHeaders(): HeadersInit {
     'Notion-Version': NOTION_VERSION,
     'Content-Type': 'application/json',
   };
+}
+
+/**
+ * Proxy helper that switches on environment:
+ * - Dev: uses Vite proxy (/notion-api/v1)
+ * - Prod: uses Vercel serverless function (/api/notion-proxy)
+ */
+async function notionFetch(notionPath: string, method: string, body?: unknown): Promise<Response> {
+  if (import.meta.env.DEV) {
+    // Dev: Vite proxy (unchanged behavior)
+    return fetch(`/notion-api/v1${notionPath}`, {
+      method,
+      headers: notionHeaders(),
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  } else {
+    // Prod: Vercel API proxy (passes apiKey in request body for security)
+    return fetch('/api/notion-proxy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        apiKey: getApiKey(),
+        notionPath,
+        method,
+        body,
+      }),
+    });
+  }
 }
 
 function transformPage(page: NotionPage): Resource {
@@ -76,11 +101,7 @@ function transformPage(page: NotionPage): Resource {
 }
 
 export async function queryResources(): Promise<Resource[]> {
-  const res = await fetch(`${NOTION_API_BASE}/databases/${getDatabaseId()}/query`, {
-    method: 'POST',
-    headers: notionHeaders(),
-    body: JSON.stringify({}),
-  });
+  const res = await notionFetch(`/databases/${getDatabaseId()}/query`, 'POST', {});
 
   if (!res.ok) {
     const err = await res.json();
@@ -105,10 +126,9 @@ export async function createResource(input: CreateResourceInput): Promise<Resour
   if (input.promptText) properties['Prompt Text'] = { rich_text: [{ text: { content: input.promptText } }] };
   if (input.model) properties['Model'] = { select: { name: input.model } };
 
-  const res = await fetch(`${NOTION_API_BASE}/pages`, {
-    method: 'POST',
-    headers: notionHeaders(),
-    body: JSON.stringify({ parent: { database_id: getDatabaseId() }, properties }),
+  const res = await notionFetch('/pages', 'POST', {
+    parent: { database_id: getDatabaseId() },
+    properties,
   });
 
   if (!res.ok) {
@@ -133,11 +153,7 @@ export async function updateResource(input: UpdateResourceInput): Promise<Resour
   if (input.model !== undefined) properties['Model'] = { select: { name: input.model } };
   if (input.isPopular !== undefined) properties['IsPopular'] = { checkbox: input.isPopular };
 
-  const res = await fetch(`${NOTION_API_BASE}/pages/${input.id}`, {
-    method: 'PATCH',
-    headers: notionHeaders(),
-    body: JSON.stringify({ properties }),
-  });
+  const res = await notionFetch(`/pages/${input.id}`, 'PATCH', { properties });
 
   if (!res.ok) {
     const err = await res.json();
@@ -149,11 +165,7 @@ export async function updateResource(input: UpdateResourceInput): Promise<Resour
 }
 
 export async function deleteResource(id: string): Promise<void> {
-  const res = await fetch(`${NOTION_API_BASE}/pages/${id}`, {
-    method: 'PATCH',
-    headers: notionHeaders(),
-    body: JSON.stringify({ archived: true }),
-  });
+  const res = await notionFetch(`/pages/${id}`, 'PATCH', { archived: true });
 
   if (!res.ok) {
     const err = await res.json();
