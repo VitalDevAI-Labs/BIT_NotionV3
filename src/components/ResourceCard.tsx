@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { ExternalLink, Copy, Check, MoreVertical } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { TYPE_COLORS, TYPE_BORDER_ACCENT } from '@/lib/constants';
+import { TYPE_BORDER_ACCENT } from '@/lib/constants';
 import type { Resource } from '@/types/resource';
 import {
   DropdownMenu,
@@ -45,12 +45,8 @@ export function ResourceCard({ resource, onEdit, onDelete }: ResourceCardProps) 
         TYPE_BORDER_ACCENT[resource.type],
       )}
     >
-      {/* Top row: type badge + model + menu */}
+      {/* Top row: model + menu */}
       <div className="flex items-center justify-between gap-2">
-        <Badge className={cn('text-xs font-medium border', TYPE_COLORS[resource.type])}>
-          <span className="sr-only">Type: </span>
-          {resource.type}
-        </Badge>
         {resource.model && (
           <span className="text-xs text-slate-500 truncate">{resource.model}</span>
         )}

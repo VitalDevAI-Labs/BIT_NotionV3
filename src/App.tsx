@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 
 import { Toaster, toast } from 'sonner';
 
@@ -15,13 +15,13 @@ import { ConfigDialog } from '@/components/ConfigDialog';
 
 export function App() {
   const { resources, loading, error, refetch } = useNotionResources();
+  const searchRef = useRef<HTMLInputElement>(null);
 
   // Filter state
   const [activeFilter, setActiveFilter] = useState<FilterType>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [selectedModel, setSelectedModel] = useState('');
+  const [tagQuery, setTagQuery] = useState('');
   const [popularOnly, setPopularOnly] = useState(false);
 
   // Config dialog — auto-opens if no credentials found
@@ -40,6 +40,12 @@ export function App() {
   const allResources = useMemo(
     () => [...optimisticResources, ...resources],
     [optimisticResources, resources],
+  );
+
+  // Derive available categories dynamically from resources
+  const availableCategories = useMemo(
+    () => Array.from(new Set(allResources.flatMap((r) => r.categories))).sort(),
+    [allResources],
   );
 
   // Combined filter logic
@@ -68,16 +74,12 @@ export function App() {
       );
     }
 
-    // Tag filter
-    if (selectedTags.length > 0) {
+    // Tag filter (text search)
+    if (tagQuery.trim()) {
+      const q = tagQuery.toLowerCase();
       result = result.filter((r) =>
-        selectedTags.some((t) => r.tags.includes(t)),
+        r.tags.some((t) => t.toLowerCase().includes(q)),
       );
-    }
-
-    // Model filter
-    if (selectedModel) {
-      result = result.filter((r) => r.model === selectedModel);
     }
 
     // Popular filter
@@ -86,7 +88,7 @@ export function App() {
     }
 
     return result;
-  }, [allResources, activeFilter, searchQuery, selectedCategories, selectedTags, selectedModel, popularOnly]);
+  }, [allResources, activeFilter, searchQuery, selectedCategories, tagQuery, popularOnly]);
 
   // Handlers
   function handleCreated(resource: Resource) {
@@ -122,6 +124,18 @@ export function App() {
     refetch();
   }
 
+  // Ctrl+K to focus search
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        searchRef.current?.focus();
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
     <div className="min-h-screen bg-slate-900 text-slate-50">
       <div className="max-w-7xl mx-auto px-6 space-y-6 py-6">
@@ -129,22 +143,21 @@ export function App() {
           onAddClick={() => setAddDialogOpen(true)}
           onConfigClick={() => setConfigOpen(true)}
           resourceCount={allResources.length}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          searchRef={searchRef}
         />
 
         <FilterBar
           activeFilter={activeFilter}
           onFilterChange={setActiveFilter}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
           selectedCategories={selectedCategories}
           onCategoriesChange={setSelectedCategories}
-          selectedTags={selectedTags}
-          onTagsChange={setSelectedTags}
-          selectedModel={selectedModel}
-          onModelChange={setSelectedModel}
+          tagQuery={tagQuery}
+          onTagQueryChange={setTagQuery}
           popularOnly={popularOnly}
           onPopularChange={setPopularOnly}
-          resources={resources}
+          availableCategories={availableCategories}
         />
 
         <ResourceGrid
@@ -162,6 +175,7 @@ export function App() {
         open={addDialogOpen}
         onOpenChange={setAddDialogOpen}
         onCreated={handleCreated}
+        availableCategories={availableCategories}
       />
 
       <EditResourceDialog
@@ -169,6 +183,7 @@ export function App() {
         resource={editResource}
         onOpenChange={setEditDialogOpen}
         onUpdated={handleUpdated}
+        availableCategories={availableCategories}
       />
 
       <DeleteConfirmDialog

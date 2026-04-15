@@ -1,21 +1,37 @@
+import type { Ref } from 'react';
+
 import { Plus, Settings } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { SearchInput } from '@/components/SearchInput';
 
 interface HeaderProps {
   onAddClick: () => void;
   onConfigClick: () => void;
   resourceCount: number;
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
+  searchRef?: Ref<HTMLInputElement>;
 }
 
-export function Header({ onAddClick, onConfigClick, resourceCount }: HeaderProps) {
+export function Header({
+  onAddClick,
+  onConfigClick,
+  resourceCount,
+  searchQuery,
+  onSearchChange,
+  searchRef,
+}: HeaderProps) {
   return (
-    <header className="flex items-center justify-between py-5">
+    <header className="flex items-center justify-between gap-4 py-5">
       <div className="flex items-center gap-3">
         <h1 className="text-2xl font-bold text-violet-400 tracking-tight">AI Bridge</h1>
         {resourceCount > 0 && (
           <span className="text-sm text-slate-500">{resourceCount} resources</span>
         )}
+      </div>
+      <div className="flex items-center gap-2 flex-1 max-w-md">
+        <SearchInput ref={searchRef} value={searchQuery} onChange={onSearchChange} className="w-full" />
       </div>
       <div className="flex items-center gap-2">
         <Button

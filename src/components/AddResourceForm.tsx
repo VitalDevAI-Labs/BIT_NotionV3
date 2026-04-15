@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Loader2 } from 'lucide-react';
 
-import { DEFAULT_CATEGORIES, MODEL_OPTIONS, RESOURCE_TYPES } from '@/lib/constants';
+import { MODEL_OPTIONS, RESOURCE_TYPES } from '@/lib/constants';
 import type { CreateResourceInput, ResourceType } from '@/types/resource';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -18,6 +18,7 @@ interface AddResourceFormProps {
   onCancel: () => void;
   initialValues?: Partial<CreateResourceInput>;
   submitLabel?: string;
+  availableCategories?: string[];
 }
 
 const DEFAULT_FORM: CreateResourceInput = {
@@ -32,7 +33,7 @@ const DEFAULT_FORM: CreateResourceInput = {
   isPopular: false,
 };
 
-export function AddResourceForm({ onSubmit, loading, error, onCancel, initialValues, submitLabel = 'Add Resource' }: AddResourceFormProps) {
+export function AddResourceForm({ onSubmit, loading, error, onCancel, initialValues, submitLabel = 'Add Resource', availableCategories = [] }: AddResourceFormProps) {
   const [form, setForm] = useState<CreateResourceInput>(initialValues ? { ...DEFAULT_FORM, ...initialValues } : DEFAULT_FORM);
 
   function set<K extends keyof CreateResourceInput>(key: K, value: CreateResourceInput[K]) {
@@ -152,7 +153,7 @@ export function AddResourceForm({ onSubmit, loading, error, onCancel, initialVal
       <div className="flex flex-col gap-1.5">
         <Label className="text-slate-200">Categories</Label>
         <ImprovedMultiSelect
-          options={DEFAULT_CATEGORIES}
+          options={availableCategories}
           value={form.categories ?? []}
           onChange={(v) => set('categories', v)}
           placeholder="Add categories..."

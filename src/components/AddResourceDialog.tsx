@@ -12,9 +12,10 @@ interface AddResourceDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onCreated: (resource: Resource) => void;
+  availableCategories?: string[];
 }
 
-export function AddResourceDialog({ open, onOpenChange, onCreated }: AddResourceDialogProps) {
+export function AddResourceDialog({ open, onOpenChange, onCreated, availableCategories }: AddResourceDialogProps) {
   const { create, loading, error } = useCreateResource();
 
   async function handleSubmit(input: CreateResourceInput) {
@@ -36,6 +37,7 @@ export function AddResourceDialog({ open, onOpenChange, onCreated }: AddResource
           loading={loading}
           error={error}
           onCancel={() => onOpenChange(false)}
+          availableCategories={availableCategories}
         />
       </DialogContent>
     </Dialog>
