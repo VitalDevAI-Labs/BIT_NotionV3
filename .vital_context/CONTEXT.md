@@ -10,10 +10,10 @@
 
 ## Current Stage
 
-- **Stage:** `Stage 2 - Enhancement`
-- **Objective:** `CRUD (edit/delete), advanced filters, quick actions, toast notifications`
+- **Stage:** `Stage 3 - UI/UX Polish`
+- **Objective:** `Simplified filters, dynamic data, search accessibility, reduced visual clutter`
 - **Status:** `Complete`
-- **Exit Criteria:** `Full edit/delete, category/tag/model/popular filters, quick menu, toasts on all actions`
+- **Exit Criteria:** `Dynamic categories, text-based tag search, search in header, Ctrl+K focus, type badges removed`
 
 ## Phases
 
@@ -22,23 +22,17 @@
 | 0 | Foundations | Project scaffolding, Notion DB creation, API client, Tailwind + shadcn/ui setup | done |
 | 1 | Core Experience | Card grid view, type filters, search, add resource form, copy/open actions | done |
 | 2 | Enhancement | Edit/delete CRUD, advanced filters, quick actions, toasts | done |
-| 3 | Polish & Hardening | PWA manifest, offline cache, dark/light theme toggle, export/import | pending |
-| 4 | Launch | Vercel deployment, real-data validation, bug fixes, performance tuning | pending |
+| 3 | UI/UX Polish | Simplified filters, dynamic categories, search in header, Ctrl+K, remove visual clutter | done |
+| 4 | Hardening & Launch | PWA manifest, offline cache, dark/light theme toggle, Vercel deploy, perf tuning | pending |
 
 ## Active Tasks
 
 | ID | Task | Status | Owner |
 |----|------|--------|-------|
-| task-20260406-001 | Scaffold Vite + TS + types + constants + Notion API client | done | Claude Code |
-| task-20260406-002 | shadcn/ui install, dark theme, Vite proxy, Stage 0 complete | done | Claude Code |
-| task-20260406-003 | useNotionResources hook + ResourceCard + ResourceGrid (V1-REQ-001, V1-REQ-002, V1-REQ-003) | done | Claude Code |
-| task-20260406-004 | Header + FilterBar + TypeFilter + SearchInput (V1-REQ-004, V1-REQ-005, V1-REQ-006, V1-REQ-007) | done | Claude Code |
-| task-20260406-005 | AddResourceDialog + Form + useCreateResource (V1-REQ-008, V1-REQ-009, V1-REQ-010) | done | Claude Code |
-| task-20260406-006 | Type actions + ImprovedMultiSelect + App wire-up (V1-REQ-011 to V1-REQ-016) | done | Claude Code |
-| task-20260406-008 | Stage 2: toast system, CRUD hooks, dialogs | done | Claude Code |
-| task-20260406-009 | Stage 2: filters (category, tags, model, popular), quick menu | done | Claude Code |
-| task-20260408-010 | Stage 2 fix: Prompt→Agent type merge + runtime Config Dialog | done | Claude Code |
-| task-20260406-007 | Fix transformPage crash: defensive property lookup with fallback keys | done | Claude Code |
+| task-20260415-001 | Dynamic categories from Notion (replaces hardcoded DEFAULT_CATEGORIES) | done | Claude Code |
+| task-20260415-002 | Remove Model dropdown, Tags as text search (simplified FilterBar) | done | Claude Code |
+| task-20260415-003 | Move search to Header right, remove type badges from cards | done | Claude Code |
+| task-20260415-004 | Ctrl+K keyboard shortcut to focus search input | done | Claude Code |
 
 ## Key Decisions
 
