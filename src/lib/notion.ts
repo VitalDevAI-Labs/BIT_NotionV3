@@ -123,7 +123,10 @@ export async function createResource(input: CreateResourceInput): Promise<Resour
 
   if (input.isPopular !== undefined) properties['IsPopular'] = { checkbox: input.isPopular };
   if (input.url) properties['URL'] = { url: input.url };
-  if (input.promptText) properties['Prompt Text'] = { rich_text: [{ text: { content: input.promptText } }] };
+  if (input.promptText) {
+    // Try multiple property name variants
+    properties['PromptText'] = { rich_text: [{ text: { content: input.promptText } }] };
+  }
   if (input.model) properties['Model'] = { select: { name: input.model } };
 
   const res = await notionFetch('/pages', 'POST', {
@@ -149,7 +152,7 @@ export async function updateResource(input: UpdateResourceInput): Promise<Resour
   if (input.categories !== undefined) properties['Categories'] = { multi_select: input.categories.map((name) => ({ name })) };
   if (input.tags !== undefined) properties['Tags'] = { multi_select: input.tags.map((name) => ({ name })) };
   if (input.url !== undefined) properties['URL'] = { url: input.url };
-  if (input.promptText !== undefined) properties['Prompt Text'] = { rich_text: [{ text: { content: input.promptText } }] };
+  if (input.promptText !== undefined) properties['PromptText'] = { rich_text: [{ text: { content: input.promptText } }] };
   if (input.model !== undefined) properties['Model'] = { select: { name: input.model } };
   if (input.isPopular !== undefined) properties['IsPopular'] = { checkbox: input.isPopular };
 
