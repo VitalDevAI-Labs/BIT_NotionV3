@@ -4,6 +4,7 @@ All completed and active task logs, newest first.
 
 | ID | Title | Req IDs | Status | Date |
 |----|-------|---------|--------|------|
+| task-20260415-005 | Dynamic tags from Notion | — | done | 2026-04-15 |
 | task-20260415-004 | Ctrl+K search shortcut | — | done | 2026-04-15 |
 | task-20260415-003 | Move search to Header, remove type badges | — | done | 2026-04-15 |
 | task-20260415-002 | Remove Model dropdown, Tags as text search | — | done | 2026-04-15 |

@@ -29,10 +29,11 @@
 
 | ID | Task | Status | Owner |
 |----|------|--------|-------|
-| task-20260415-001 | Dynamic categories from Notion (replaces hardcoded DEFAULT_CATEGORIES) | done | Claude Code |
-| task-20260415-002 | Remove Model dropdown, Tags as text search (simplified FilterBar) | done | Claude Code |
-| task-20260415-003 | Move search to Header right, remove type badges from cards | done | Claude Code |
+| task-20260415-005 | Dynamic tags from Notion (search, filter, manage from app) | done | Claude Code |
 | task-20260415-004 | Ctrl+K keyboard shortcut to focus search input | done | Claude Code |
+| task-20260415-003 | Move search to Header right, remove type badges from cards | done | Claude Code |
+| task-20260415-002 | Remove Model dropdown, Tags as text search (simplified FilterBar) | done | Claude Code |
+| task-20260415-001 | Dynamic categories from Notion (replaces hardcoded DEFAULT_CATEGORIES) | done | Claude Code |
 
 ## Key Decisions
 
