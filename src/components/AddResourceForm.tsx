@@ -19,6 +19,7 @@ interface AddResourceFormProps {
   initialValues?: Partial<CreateResourceInput>;
   submitLabel?: string;
   availableCategories?: string[];
+  availableTags?: string[];
 }
 
 const DEFAULT_FORM: CreateResourceInput = {
@@ -33,7 +34,7 @@ const DEFAULT_FORM: CreateResourceInput = {
   isPopular: false,
 };
 
-export function AddResourceForm({ onSubmit, loading, error, onCancel, initialValues, submitLabel = 'Add Resource', availableCategories = [] }: AddResourceFormProps) {
+export function AddResourceForm({ onSubmit, loading, error, onCancel, initialValues, submitLabel = 'Add Resource', availableCategories = [], availableTags = [] }: AddResourceFormProps) {
   const [form, setForm] = useState<CreateResourceInput>(initialValues ? { ...DEFAULT_FORM, ...initialValues } : DEFAULT_FORM);
 
   function set<K extends keyof CreateResourceInput>(key: K, value: CreateResourceInput[K]) {
@@ -164,7 +165,7 @@ export function AddResourceForm({ onSubmit, loading, error, onCancel, initialVal
       <div className="flex flex-col gap-1.5">
         <Label className="text-slate-200">Tags</Label>
         <ImprovedMultiSelect
-          options={[]}
+          options={availableTags}
           value={form.tags ?? []}
           onChange={(v) => set('tags', v)}
           placeholder="Add tags..."

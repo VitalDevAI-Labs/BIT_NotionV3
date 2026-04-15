@@ -48,6 +48,12 @@ export function App() {
     [allResources],
   );
 
+  // Derive available tags dynamically from resources
+  const availableTags = useMemo(
+    () => Array.from(new Set(allResources.flatMap((r) => r.tags))).sort(),
+    [allResources],
+  );
+
   // Combined filter logic
   const filtered = useMemo(() => {
     let result = allResources;
@@ -176,6 +182,7 @@ export function App() {
         onOpenChange={setAddDialogOpen}
         onCreated={handleCreated}
         availableCategories={availableCategories}
+        availableTags={availableTags}
       />
 
       <EditResourceDialog
@@ -184,6 +191,7 @@ export function App() {
         onOpenChange={setEditDialogOpen}
         onUpdated={handleUpdated}
         availableCategories={availableCategories}
+        availableTags={availableTags}
       />
 
       <DeleteConfirmDialog

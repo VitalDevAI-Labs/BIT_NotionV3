@@ -14,9 +14,10 @@ interface EditResourceDialogProps {
   onOpenChange: (open: boolean) => void;
   onUpdated: (resource: Resource) => void;
   availableCategories?: string[];
+  availableTags?: string[];
 }
 
-export function EditResourceDialog({ open, resource, onOpenChange, onUpdated, availableCategories }: EditResourceDialogProps) {
+export function EditResourceDialog({ open, resource, onOpenChange, onUpdated, availableCategories, availableTags }: EditResourceDialogProps) {
   const { update, loading, error } = useUpdateResource();
 
   async function handleSubmit(input: CreateResourceInput) {
@@ -58,6 +59,7 @@ export function EditResourceDialog({ open, resource, onOpenChange, onUpdated, av
             initialValues={initialValues}
             submitLabel="Save Changes"
             availableCategories={availableCategories}
+            availableTags={availableTags}
           />
         )}
       </DialogContent>
