@@ -181,30 +181,78 @@
 
 ---
 
-## Stage 3: Polish & Hardening -- `pending`
+## Stage 3: UI/UX Polish -- `done`
 
-**Window:** Week 3+
+**Window:** 2026-04-15
 
 **Goals:**
-- Make app installable as PWA
-- Add offline capability with LocalStorage cache
-- Implement dark/light theme toggle
-- Build data export/import features
+- Simplify FilterBar UI (remove Model dropdown, replace Tag multi-select with text search)
+- Fetch categories dynamically from Notion data instead of hardcoded list
+- Move search input to Header (right side) for better space utilization
+- Implement Ctrl+K keyboard shortcut to focus search from anywhere
+- Remove visual clutter (type badges from cards)
 
 ### Requirements
 
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| V3-REQ-001 | PWA manifest.json | P2 | planned |
-| V3-REQ-002 | Service worker for offline caching | P2 | planned |
-| V3-REQ-003 | Offline mode with LocalStorage cache | P2 | planned |
-| V3-REQ-004 | ThemeToggle component | P2 | planned |
-| V3-REQ-005 | Light theme CSS variables | P2 | planned |
-| V3-REQ-006 | Export to JSON | P3 | planned |
-| V3-REQ-007 | Export to CSV | P3 | planned |
-| V3-REQ-008 | Import from JSON | P3 | planned |
-| V3-REQ-009 | Keyboard shortcuts | P3 | planned |
-| V3-REQ-010 | Mobile responsive optimization | P3 | planned |
+| (S3-001) | Dynamic categories from Notion data | P0 | done |
+| (S3-002) | Remove Model filter from FilterBar | P0 | done |
+| (S3-003) | Replace Tag multi-select with text search | P0 | done |
+| (S3-004) | Move SearchInput to Header right side | P0 | done |
+| (S3-005) | Remove type badges from ResourceCard | P0 | done |
+| (S3-006) | Implement Ctrl+K focus shortcut | P0 | done |
+
+**Key Tasks:** task-20260415-001, task-20260415-002, task-20260415-003, task-20260415-004
+
+**Acceptance Criteria:**
+- [x] Categories dropdown shows values from actual Notion data (auto-updates as users add new values)
+- [x] Model `<select>` completely removed from FilterBar
+- [x] Tag filtering uses simple text input with substring matching
+- [x] SearchInput moved from FilterBar Row 1 to Header right section
+- [x] Type badges removed from ResourceCard (left border accent still visible)
+- [x] Pressing Ctrl+K from anywhere on page focuses search input
+- [x] All existing filters (type, category, popular) continue to work correctly
+- [x] No regressions in Stage 0, 1, and 2 functionality
+
+### Definition of Done
+- [x] All S3 requirements status set to `done`
+- [x] FilterBar simplified to 2 rows: TypeFilter | Categories + TagSearch + Popular
+- [x] ResourceCard simplified: top row shows model + menu only (no type badge)
+- [x] Header search accessible from anywhere via Ctrl+K
+- [x] Build succeeds with 0 errors
+- [x] Code committed and pushed (commits: 18cd09b, fe62757)
+
+**Risks:** None identified
+
+**Hand-off:** UI-polished app with simplified filters and improved keyboard accessibility. Ready for Stage 4 (Hardening & Launch).
+
+---
+
+## Stage 4: Hardening & Launch -- `pending`
+
+**Window:** After Stage 3
+
+**Goals:**
+- Make app installable as PWA
+- Add offline capability with LocalStorage cache
+- Implement dark/light theme toggle
+- Deploy to Vercel and validate with real data
+
+### Requirements
+
+| ID | Requirement | Priority | Status |
+|----|-------------|----------|--------|
+| V4-REQ-001 | PWA manifest.json | P2 | planned |
+| V4-REQ-002 | Service worker for offline caching | P2 | planned |
+| V4-REQ-003 | Offline mode with LocalStorage cache | P2 | planned |
+| V4-REQ-004 | ThemeToggle component | P2 | planned |
+| V4-REQ-005 | Light theme CSS variables | P2 | planned |
+| V4-REQ-006 | Deploy to Vercel free tier | P0 | planned |
+| V4-REQ-007 | Validate with real data (10+ resources) | P0 | planned |
+| V4-REQ-008 | Fix critical/high bugs | P0 | planned |
+| V4-REQ-009 | Performance audit (<2s load) | P1 | planned |
+| V4-REQ-010 | Write README.md | P2 | planned |
 
 **Key Tasks:** TBD -- generate when stage becomes active
 
@@ -213,64 +261,25 @@
 - [ ] Service worker caches app shell
 - [ ] Offline mode serves cached resources (not blank screen)
 - [ ] Theme toggle switches dark/light, preference survives refresh
-- [ ] Export produces valid JSON and CSV files
-- [ ] Import creates resources from JSON file
-- [ ] Keyboard shortcuts work (Ctrl+K, Ctrl+N, Esc)
-- [ ] Touch targets meet 44px minimum on mobile
-
-### Definition of Done
-- [ ] All P2 requirements (V3-REQ-001 through V3-REQ-005) status set to `done`
-- [ ] App installable as PWA on Chrome desktop
-- [ ] Offline mode serves cached data gracefully
-- [ ] Theme toggle works and preference persists
-- [ ] No regressions in Stage 0, 1, and 2 functionality
-- [ ] Code committed and pushed
-
-**Risks:** Service worker caching bugs; cache invalidation complexity
-
-**Hand-off:** Production-ready app for Stage 4 deployment
-
----
-
-## Stage 4: Launch -- `pending`
-
-**Window:** After Stage 3
-
-**Goals:**
-- Deploy to Vercel
-- Validate with real user data
-- Fix bugs and tune performance
-
-### Requirements
-
-| ID | Requirement | Priority | Status |
-|----|-------------|----------|--------|
-| V4-REQ-001 | Deploy to Vercel free tier | P0 | planned |
-| V4-REQ-002 | Validate with real data (10+ resources) | P0 | planned |
-| V4-REQ-003 | Fix critical/high bugs | P0 | planned |
-| V4-REQ-004 | Performance audit (<2s load) | P1 | planned |
-| V4-REQ-005 | Write README.md | P2 | planned |
-
-**Key Tasks:** TBD -- generate when stage becomes active
-
-**Acceptance Criteria:**
 - [ ] App accessible via Vercel URL
 - [ ] All real data loads and displays correctly
 - [ ] No critical or high bugs open in [bugs.md](bugs.md)
 - [ ] Initial page load under 2 seconds
-- [ ] README.md has setup instructions
 
 ### Definition of Done
-- [ ] All V4-REQ-001 through V4-REQ-005 status set to `done`
+- [ ] All P2 requirements (V4-REQ-001 through V4-REQ-005) status set to `done`
+- [ ] App installable as PWA on Chrome desktop
+- [ ] Offline mode serves cached data gracefully
+- [ ] Theme toggle works and preference persists
 - [ ] App live and accessible via Vercel URL
 - [ ] Tested with VitalDev's real data (minimum 10 resources)
 - [ ] No critical or high bugs open
-- [ ] Page load under 2 seconds on standard connection
-- [ ] All previous stage DoDs still passing (no regressions)
+- [ ] No regressions in Stage 0, 1, 2, and 3 functionality
+- [ ] Code committed and pushed
 
-**Risks:** None identified
+**Risks:** Service worker caching bugs; cache invalidation complexity
 
-**Hand-off:** Live product
+**Hand-off:** Live production app
 
 ---
 
@@ -281,6 +290,6 @@
 | V0-REQ-001 to V0-REQ-009 | Stage 0: Foundations | 9 |
 | V1-REQ-001 to V1-REQ-016 | Stage 1: Core Experience | 16 |
 | V2-REQ-001 to V2-REQ-016 | Stage 2: Enhancement | 16 |
-| V3-REQ-001 to V3-REQ-010 | Stage 3: Polish & Hardening | 10 |
-| V4-REQ-001 to V4-REQ-005 | Stage 4: Launch | 5 |
-| **Total** | | **56** |
+| S3-001 to S3-006 | Stage 3: UI/UX Polish | 6 |
+| V4-REQ-001 to V4-REQ-010 | Stage 4: Hardening & Launch | 10 |
+| **Total** | | **57** |
