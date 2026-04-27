@@ -77,17 +77,19 @@ No backend server. Browser calls Notion API directly. API key stored in browser 
 
 Property-level schema (maps directly to Notion database configuration):
 
+**Property names are the single source of truth in [src/lib/notion-schema.ts](../src/lib/notion-schema.ts).** If a column is renamed in Notion, update that one file.
+
 | Property | Notion Type | Required | Options / Format |
 |----------|-------------|----------|------------------|
 | Title | title | Yes | Free text |
-| Type | select | Yes | `Chat Link`, `Prompt`, `Agent` |
+| Type | select | Yes | `Chat Link`, `Agent` (legacy `Prompt` records are normalized to `Agent`) |
 | Description | rich_text | No | Free text |
-| Categories | multi_select | No | Code Assistant, Creative Writing, Data Analysis, English Expert, Formatters, General Experts, Research, Tools |
+| Categories | select | No | Single value; app stores as 1-element array. Code Assistant, Creative Writing, Data Analysis, English Expert, Formatters, General Experts, Research, Tools |
 | Tags | multi_select | No | Freeform (React, Python, API, Debug, etc.) |
-| URL | url | No | Valid URL (for Chat Links) |
-| Prompt Text | rich_text | No | Long text (for Prompts and Agents) |
+| Url | url | No | Valid URL (for Chat Links and optional Agent links) |
+| PromptText | rich_text | No | Long text (Agent context) |
 | Model | select | No | GPT-4, GPT-4 Turbo, GPT-3.5, Claude Opus, Claude Sonnet, Claude Haiku, Gemini Pro, Gemini Ultra, Perplexity, Other |
-| Is Popular | checkbox | No | true/false |
+| IsPopular | checkbox | No | true/false |
 | Created | created_time | Auto | ISO timestamp |
 | Last Edited | last_edited_time | Auto | ISO timestamp |
 

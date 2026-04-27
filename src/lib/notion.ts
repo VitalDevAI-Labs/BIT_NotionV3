@@ -75,7 +75,7 @@ function transformPage(page: NotionPage): Resource {
     title: titleProp?.title ? extractPlainText(titleProp.title) : 'Untitled',
     type: (typeProp?.select?.name === 'Prompt' ? 'Agent' : (typeProp?.select?.name ?? 'Agent')) as Resource['type'],
     description: descProp?.rich_text ? extractPlainText(descProp.rich_text) : '',
-    categories: catProp?.multi_select?.map((c: { name: string }) => c.name) ?? [],
+    categories: catProp?.select?.name ? [catProp.select.name] : [],
     tags: tagProp?.multi_select?.map((t: { name: string }) => t.name) ?? [],
     url: urlProp?.url ?? undefined,
     promptText: promptProp?.rich_text ? (extractPlainText(promptProp.rich_text) || undefined) : undefined,
@@ -99,11 +99,12 @@ export async function queryResources(): Promise<Resource[]> {
 }
 
 export async function createResource(input: CreateResourceInput): Promise<Resource> {
+  const firstCategory = input.categories?.[0];
   const properties: Record<string, unknown> = {
     [NOTION_PROPS.title]: { title: [{ text: { content: input.title } }] },
     [NOTION_PROPS.type]: { select: { name: input.type } },
     [NOTION_PROPS.description]: { rich_text: [{ text: { content: input.description ?? '' } }] },
-    [NOTION_PROPS.categories]: { multi_select: (input.categories ?? []).map((name) => ({ name })) },
+    [NOTION_PROPS.categories]: firstCategory ? { select: { name: firstCategory } } : { select: null },
     [NOTION_PROPS.tags]: { multi_select: (input.tags ?? []).map((name) => ({ name })) },
   };
 
@@ -132,7 +133,10 @@ export async function updateResource(input: UpdateResourceInput): Promise<Resour
   if (input.title !== undefined) properties[NOTION_PROPS.title] = { title: [{ text: { content: input.title } }] };
   if (input.type !== undefined) properties[NOTION_PROPS.type] = { select: { name: input.type } };
   if (input.description !== undefined) properties[NOTION_PROPS.description] = { rich_text: [{ text: { content: input.description } }] };
-  if (input.categories !== undefined) properties[NOTION_PROPS.categories] = { multi_select: input.categories.map((name) => ({ name })) };
+  if (input.categories !== undefined) {
+    const firstCategory = input.categories[0];
+    properties[NOTION_PROPS.categories] = firstCategory ? { select: { name: firstCategory } } : { select: null };
+  }
   if (input.tags !== undefined) properties[NOTION_PROPS.tags] = { multi_select: input.tags.map((name) => ({ name })) };
   if (input.url !== undefined) properties[NOTION_PROPS.url] = { url: input.url };
   if (input.promptText !== undefined) properties[NOTION_PROPS.promptText] = { rich_text: [{ text: { content: input.promptText } }] };

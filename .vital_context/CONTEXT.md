@@ -29,6 +29,7 @@
 
 | ID | Task | Status | Owner |
 |----|------|--------|-------|
+| task-20260415-007 | Categories as single-select (Notion schema fix) | done | Claude Code |
 | task-20260415-006 | Single source of truth for Notion schema (notion-schema.ts) | done | Claude Code |
 | task-20260415-005 | Dynamic tags from Notion (search, filter, manage from app) | done | Claude Code |
 | task-20260415-004 | Ctrl+K keyboard shortcut to focus search input | done | Claude Code |

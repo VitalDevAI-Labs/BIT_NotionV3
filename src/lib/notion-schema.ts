@@ -8,6 +8,17 @@
  * the name and type match exactly (case-sensitive, including spaces).
  */
 
+// Notion property types (for reference — keep in sync with the actual DB):
+//   Title       → title
+//   Type        → select          (Chat Link / Agent)
+//   Description → rich_text
+//   Categories  → select          (single-value; app stores as 1-element array)
+//   Tags        → multi_select
+//   Url         → url
+//   PromptText  → rich_text
+//   Model       → select
+//   IsPopular   → checkbox
+
 export const NOTION_PROPS = {
   title: 'Title',
   type: 'Type',
