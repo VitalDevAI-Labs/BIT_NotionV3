@@ -1,6 +1,7 @@
 import type { Resource, CreateResourceInput, UpdateResourceInput } from '@/types/resource';
 import type { NotionPage, NotionQueryResponse } from '@/types/notion';
 import { extractPlainText } from '@/lib/utils';
+import { NOTION_PROPS } from '@/lib/notion-schema';
 
 // In dev, Vite proxies /notion-api → https://api.notion.com to avoid CORS issues.
 // In production (Vercel), requests route through /api/notion-proxy serverless function.
@@ -35,21 +36,14 @@ function notionHeaders(): HeadersInit {
   };
 }
 
-/**
- * Proxy helper that switches on environment:
- * - Dev: uses Vite proxy (/notion-api/v1)
- * - Prod: uses Vercel serverless function (/api/notion-proxy)
- */
 async function notionFetch(notionPath: string, method: string, body?: unknown): Promise<Response> {
   if (import.meta.env.DEV) {
-    // Dev: Vite proxy (unchanged behavior)
     return fetch(`/notion-api/v1${notionPath}`, {
       method,
       headers: notionHeaders(),
       body: body ? JSON.stringify(body) : undefined,
     });
   } else {
-    // Prod: Vercel API proxy (passes apiKey in request body for security)
     return fetch('/api/notion-proxy', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -64,29 +58,21 @@ async function notionFetch(notionPath: string, method: string, body?: unknown): 
 }
 
 function transformPage(page: NotionPage): Resource {
-  // Use a loosely-typed alias so we can safely access any property name
-  // (Notion property names are case-sensitive and may differ from the schema)
   const p = page.properties as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
-  // Helper: first matching property key from a list of candidates
-  function prop(keys: string[]) {
-    for (const k of keys) if (p[k] !== undefined) return p[k];
-    return undefined;
-  }
-
-  const titleProp = prop(['Title', 'title', 'Name', 'name']);
-  const typeProp  = prop(['Type', 'type']);
-  const descProp  = prop(['Description', 'description']);
-  const catProp   = prop(['Categories', 'categories', 'Category', 'category']);
-  const tagProp   = prop(['Tags', 'tags', 'Tag', 'tag']);
-  const urlProp   = prop(['Uri', 'URI', 'URL', 'url', 'Url', 'Link', 'link']);
-  const promptProp = prop(['Prompt Text', 'Prompt...', 'prompt_text', 'PromptText', 'Prompt', 'prompt']);
-  const modelProp  = prop(['Model', 'model']);
-  const popularProp = prop(['IsPopular', 'Is Popular', 'is_popular', 'Popular', 'popular']);
+  const titleProp = p[NOTION_PROPS.title];
+  const typeProp = p[NOTION_PROPS.type];
+  const descProp = p[NOTION_PROPS.description];
+  const catProp = p[NOTION_PROPS.categories];
+  const tagProp = p[NOTION_PROPS.tags];
+  const urlProp = p[NOTION_PROPS.url];
+  const promptProp = p[NOTION_PROPS.promptText];
+  const modelProp = p[NOTION_PROPS.model];
+  const popularProp = p[NOTION_PROPS.isPopular];
 
   return {
     id: page.id,
-    title: titleProp?.title ? extractPlainText(titleProp.title) : (titleProp?.rich_text ? extractPlainText(titleProp.rich_text) : 'Untitled'),
+    title: titleProp?.title ? extractPlainText(titleProp.title) : 'Untitled',
     type: (typeProp?.select?.name === 'Prompt' ? 'Agent' : (typeProp?.select?.name ?? 'Agent')) as Resource['type'],
     description: descProp?.rich_text ? extractPlainText(descProp.rich_text) : '',
     categories: catProp?.multi_select?.map((c: { name: string }) => c.name) ?? [],
@@ -114,19 +100,17 @@ export async function queryResources(): Promise<Resource[]> {
 
 export async function createResource(input: CreateResourceInput): Promise<Resource> {
   const properties: Record<string, unknown> = {
-    Title: { title: [{ text: { content: input.title } }] },
-    Type: { select: { name: input.type } },
-    Description: { rich_text: [{ text: { content: input.description ?? '' } }] },
-    Categories: { multi_select: (input.categories ?? []).map((name) => ({ name })) },
-    Tags: { multi_select: (input.tags ?? []).map((name) => ({ name })) },
+    [NOTION_PROPS.title]: { title: [{ text: { content: input.title } }] },
+    [NOTION_PROPS.type]: { select: { name: input.type } },
+    [NOTION_PROPS.description]: { rich_text: [{ text: { content: input.description ?? '' } }] },
+    [NOTION_PROPS.categories]: { multi_select: (input.categories ?? []).map((name) => ({ name })) },
+    [NOTION_PROPS.tags]: { multi_select: (input.tags ?? []).map((name) => ({ name })) },
   };
 
-  if (input.isPopular !== undefined) properties['IsPopular'] = { checkbox: input.isPopular };
-  if (input.url) properties['Uri'] = { url: input.url };
-  if (input.promptText) {
-    properties['Prompt Text'] = { rich_text: [{ text: { content: input.promptText } }] };
-  }
-  if (input.model) properties['Model'] = { select: { name: input.model } };
+  if (input.isPopular !== undefined) properties[NOTION_PROPS.isPopular] = { checkbox: input.isPopular };
+  if (input.url) properties[NOTION_PROPS.url] = { url: input.url };
+  if (input.promptText) properties[NOTION_PROPS.promptText] = { rich_text: [{ text: { content: input.promptText } }] };
+  if (input.model) properties[NOTION_PROPS.model] = { select: { name: input.model } };
 
   const res = await notionFetch('/pages', 'POST', {
     parent: { database_id: getDatabaseId() },
@@ -145,15 +129,15 @@ export async function createResource(input: CreateResourceInput): Promise<Resour
 export async function updateResource(input: UpdateResourceInput): Promise<Resource> {
   const properties: Record<string, unknown> = {};
 
-  if (input.title !== undefined) properties['Title'] = { title: [{ text: { content: input.title } }] };
-  if (input.type !== undefined) properties['Type'] = { select: { name: input.type } };
-  if (input.description !== undefined) properties['Description'] = { rich_text: [{ text: { content: input.description } }] };
-  if (input.categories !== undefined) properties['Categories'] = { multi_select: input.categories.map((name) => ({ name })) };
-  if (input.tags !== undefined) properties['Tags'] = { multi_select: input.tags.map((name) => ({ name })) };
-  if (input.url !== undefined) properties['Uri'] = { url: input.url };
-  if (input.promptText !== undefined) properties['Prompt Text'] = { rich_text: [{ text: { content: input.promptText } }] };
-  if (input.model !== undefined) properties['Model'] = { select: { name: input.model } };
-  if (input.isPopular !== undefined) properties['IsPopular'] = { checkbox: input.isPopular };
+  if (input.title !== undefined) properties[NOTION_PROPS.title] = { title: [{ text: { content: input.title } }] };
+  if (input.type !== undefined) properties[NOTION_PROPS.type] = { select: { name: input.type } };
+  if (input.description !== undefined) properties[NOTION_PROPS.description] = { rich_text: [{ text: { content: input.description } }] };
+  if (input.categories !== undefined) properties[NOTION_PROPS.categories] = { multi_select: input.categories.map((name) => ({ name })) };
+  if (input.tags !== undefined) properties[NOTION_PROPS.tags] = { multi_select: input.tags.map((name) => ({ name })) };
+  if (input.url !== undefined) properties[NOTION_PROPS.url] = { url: input.url };
+  if (input.promptText !== undefined) properties[NOTION_PROPS.promptText] = { rich_text: [{ text: { content: input.promptText } }] };
+  if (input.model !== undefined) properties[NOTION_PROPS.model] = { select: { name: input.model } };
+  if (input.isPopular !== undefined) properties[NOTION_PROPS.isPopular] = { checkbox: input.isPopular };
 
   const res = await notionFetch(`/pages/${input.id}`, 'PATCH', { properties });
 
