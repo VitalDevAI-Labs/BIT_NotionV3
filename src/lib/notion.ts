@@ -79,8 +79,8 @@ function transformPage(page: NotionPage): Resource {
   const descProp  = prop(['Description', 'description']);
   const catProp   = prop(['Categories', 'categories', 'Category', 'category']);
   const tagProp   = prop(['Tags', 'tags', 'Tag', 'tag']);
-  const urlProp   = prop(['URL', 'url', 'Url', 'Link', 'link']);
-  const promptProp = prop(['Prompt Text', 'prompt_text', 'PromptText', 'Prompt', 'prompt']);
+  const urlProp   = prop(['Uri', 'URI', 'URL', 'url', 'Url', 'Link', 'link']);
+  const promptProp = prop(['Prompt Text', 'Prompt...', 'prompt_text', 'PromptText', 'Prompt', 'prompt']);
   const modelProp  = prop(['Model', 'model']);
   const popularProp = prop(['IsPopular', 'Is Popular', 'is_popular', 'Popular', 'popular']);
 
@@ -122,10 +122,9 @@ export async function createResource(input: CreateResourceInput): Promise<Resour
   };
 
   if (input.isPopular !== undefined) properties['IsPopular'] = { checkbox: input.isPopular };
-  if (input.url) properties['URL'] = { url: input.url };
+  if (input.url) properties['Uri'] = { url: input.url };
   if (input.promptText) {
-    // Try multiple property name variants
-    properties['PromptText'] = { rich_text: [{ text: { content: input.promptText } }] };
+    properties['Prompt Text'] = { rich_text: [{ text: { content: input.promptText } }] };
   }
   if (input.model) properties['Model'] = { select: { name: input.model } };
 
@@ -151,8 +150,8 @@ export async function updateResource(input: UpdateResourceInput): Promise<Resour
   if (input.description !== undefined) properties['Description'] = { rich_text: [{ text: { content: input.description } }] };
   if (input.categories !== undefined) properties['Categories'] = { multi_select: input.categories.map((name) => ({ name })) };
   if (input.tags !== undefined) properties['Tags'] = { multi_select: input.tags.map((name) => ({ name })) };
-  if (input.url !== undefined) properties['URL'] = { url: input.url };
-  if (input.promptText !== undefined) properties['PromptText'] = { rich_text: [{ text: { content: input.promptText } }] };
+  if (input.url !== undefined) properties['Uri'] = { url: input.url };
+  if (input.promptText !== undefined) properties['Prompt Text'] = { rich_text: [{ text: { content: input.promptText } }] };
   if (input.model !== undefined) properties['Model'] = { select: { name: input.model } };
   if (input.isPopular !== undefined) properties['IsPopular'] = { checkbox: input.isPopular };
 
