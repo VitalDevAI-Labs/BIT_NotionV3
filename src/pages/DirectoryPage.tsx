@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { toast } from 'sonner';
 import type { FilterType, Resource } from '@/types/resource';
-import { MOCK_AGENTS } from '@/data/mockAgents';
+import { useNotionResources } from '@/hooks/useNotionResources';
 import { FilterTabs } from '@/components/new/FilterTabs';
 import { ControlsRow } from '@/components/new/ControlsRow';
 import { AgentGrid } from '@/components/new/AgentGrid';
@@ -12,16 +12,28 @@ interface DirectoryPageProps {
   onEditClick: (r: Resource) => void;
   onDeleteClick: (r: Resource) => void;
   searchQuery: string;
+  refetchTrigger: number;
 }
 
-export function DirectoryPage({ onAddClick, onEditClick, onDeleteClick, searchQuery }: DirectoryPageProps) {
+export function DirectoryPage({
+  onAddClick,
+  onEditClick,
+  onDeleteClick,
+  searchQuery,
+  refetchTrigger,
+}: DirectoryPageProps) {
+  const { resources, loading, error, refetch } = useNotionResources();
+
   const [activeFilter, setActiveFilter] = useState<FilterType>('All');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const [popularOnly, setPopularOnly] = useState(false);
 
-  // Using mock data — swap MOCK_AGENTS for real resources once backend is wired
-  const resources = MOCK_AGENTS;
+  // Re-fetch when parent signals a mutation completed
+  useMemo(() => {
+    if (refetchTrigger > 0) refetch();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refetchTrigger]);
 
   const filtered = useMemo(() => {
     let result = resources;
@@ -32,7 +44,9 @@ export function DirectoryPage({ onAddClick, onEditClick, onDeleteClick, searchQu
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       result = result.filter(
-        (r) => r.title.toLowerCase().includes(q) || r.description.toLowerCase().includes(q),
+        (r) =>
+          r.title.toLowerCase().includes(q) ||
+          r.description.toLowerCase().includes(q),
       );
     }
     if (selectedCategory) {
@@ -48,15 +62,15 @@ export function DirectoryPage({ onAddClick, onEditClick, onDeleteClick, searchQu
     return result;
   }, [resources, activeFilter, searchQuery, selectedCategory, selectedModel, popularOnly]);
 
-  const activeAgentCount = filtered.filter((r) => r.type === 'Agent' && r.isPopular).length;
+  const activeAgentCount = resources.filter((r) => r.type === 'Agent').length;
 
-  function handleDelete(r: Resource) {
+  function handleDeleteClick(r: Resource) {
     onDeleteClick(r);
     toast.success(`"${r.title}" deleted`);
   }
 
   return (
-    <main className="max-w-[1180px] mx-auto px-4 md:px-6 pb-24">
+    <main className="max-w-295 mx-auto px-4 md:px-6 pb-24">
       {/* Page hero */}
       <div className="pt-10 pb-8">
         <div className="flex items-center gap-3 mb-2">
@@ -80,10 +94,9 @@ export function DirectoryPage({ onAddClick, onEditClick, onDeleteClick, searchQu
         </p>
       </div>
 
-      {/* Filter tabs + Add button row */}
+      {/* Filter tabs + Add button */}
       <div className="flex items-center justify-between gap-4 mb-5">
         <FilterTabs active={activeFilter} onChange={setActiveFilter} />
-
         <button
           onClick={onAddClick}
           className="hidden md:flex shrink-0 items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all"
@@ -98,7 +111,7 @@ export function DirectoryPage({ onAddClick, onEditClick, onDeleteClick, searchQu
         </button>
       </div>
 
-      {/* Controls row */}
+      {/* Controls */}
       <div className="mb-6">
         <ControlsRow
           activeCount={activeAgentCount}
@@ -111,20 +124,18 @@ export function DirectoryPage({ onAddClick, onEditClick, onDeleteClick, searchQu
         />
       </div>
 
-      {/* Divider */}
       <div className="mb-6 border-t" style={{ borderColor: '#1F2024' }} />
 
-      {/* Grid */}
+      {/* Grid — real Notion data */}
       <AgentGrid
         resources={filtered}
-        loading={false}
-        error={null}
+        loading={loading}
+        error={error}
         onAdd={onAddClick}
         onEdit={onEditClick}
-        onDelete={handleDelete}
+        onDelete={handleDeleteClick}
       />
 
-      {/* Mobile FAB */}
       <FloatingAction onClick={onAddClick} />
     </main>
   );
