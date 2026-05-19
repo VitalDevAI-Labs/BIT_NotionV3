@@ -9,6 +9,7 @@ import { FloatingAction } from '@/components/new/FloatingAction';
 
 interface DirectoryPageProps {
   onAddClick: () => void;
+  onViewClick: (r: Resource) => void;
   onEditClick: (r: Resource) => void;
   onDeleteClick: (r: Resource) => void;
   searchQuery: string;
@@ -17,6 +18,7 @@ interface DirectoryPageProps {
 
 export function DirectoryPage({
   onAddClick,
+  onViewClick,
   onEditClick,
   onDeleteClick,
   searchQuery,
@@ -132,6 +134,7 @@ export function DirectoryPage({
         loading={loading}
         error={error}
         onAdd={onAddClick}
+        onView={onViewClick}
         onEdit={onEditClick}
         onDelete={handleDeleteClick}
       />

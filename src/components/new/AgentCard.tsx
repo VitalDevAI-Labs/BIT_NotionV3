@@ -4,6 +4,7 @@ import type { Resource } from '@/types/resource';
 
 interface AgentCardProps {
   resource: Resource;
+  onView: (r: Resource) => void;
   onEdit: (r: Resource) => void;
   onDelete: (r: Resource) => void;
 }
@@ -60,7 +61,7 @@ function StatusDot({ isPopular }: { isPopular: boolean }) {
   );
 }
 
-export function AgentCard({ resource, onEdit, onDelete }: AgentCardProps) {
+export function AgentCard({ resource, onView, onEdit, onDelete }: AgentCardProps) {
   const [copied, setCopied] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -111,22 +112,23 @@ export function AgentCard({ resource, onEdit, onDelete }: AgentCardProps) {
         </button>
       </div>
 
-      {/* Title + category */}
-      <div>
+      {/* Title + category + description — clicking navigates to detail */}
+      <button
+        onClick={() => onView(resource)}
+        className="flex flex-col gap-1 text-left transition-opacity hover:opacity-90"
+      >
         <h3 className="font-semibold text-sm leading-snug line-clamp-2" style={{ color: '#E8E8EA' }}>
           {resource.title}
         </h3>
         {resource.categories[0] && (
-          <p className="text-xs mt-0.5" style={{ color: '#A855F7' }}>{resource.categories[0]}</p>
+          <p className="text-xs" style={{ color: '#A855F7' }}>{resource.categories[0]}</p>
         )}
-      </div>
-
-      {/* Description */}
-      {resource.description && (
-        <p className="text-sm leading-relaxed line-clamp-2 flex-1" style={{ color: '#9A9BA0' }}>
-          {resource.description}
-        </p>
-      )}
+        {resource.description && (
+          <p className="text-sm leading-relaxed line-clamp-2 mt-0.5" style={{ color: '#9A9BA0' }}>
+            {resource.description}
+          </p>
+        )}
+      </button>
 
       {/* Tags */}
       {visibleTags.length > 0 && (

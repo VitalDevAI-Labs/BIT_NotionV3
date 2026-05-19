@@ -7,11 +7,12 @@ interface AgentGridProps {
   loading: boolean;
   error: string | null;
   onAdd: () => void;
+  onView: (r: Resource) => void;
   onEdit: (r: Resource) => void;
   onDelete: (r: Resource) => void;
 }
 
-export function AgentGrid({ resources, loading, error, onAdd, onEdit, onDelete }: AgentGridProps) {
+export function AgentGrid({ resources, loading, error, onAdd, onView, onEdit, onDelete }: AgentGridProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-32" style={{ color: '#9A9BA0' }}>
@@ -70,7 +71,7 @@ export function AgentGrid({ resources, loading, error, onAdd, onEdit, onDelete }
 
       {/* Agent cards */}
       {resources.map((r) => (
-        <AgentCard key={r.id} resource={r} onEdit={onEdit} onDelete={onDelete} />
+        <AgentCard key={r.id} resource={r} onView={onView} onEdit={onEdit} onDelete={onDelete} />
       ))}
 
       {/* Empty state filler cards (decorative) */}
