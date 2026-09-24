@@ -4,6 +4,7 @@ All completed and active task logs, newest first.
 
 | ID | Title | Req IDs | Status | Date |
 |----|-------|---------|--------|------|
+| task-20260920-001 | Vital Context governance and enforcement | S35-REQ-001 | accepted | 2026-09-20 |
 | task-20260415-007 | Categories as single-select (Notion schema fix) | — | done | 2026-04-15 |
 | task-20260415-006 | Single source of truth for Notion schema (notion-schema.ts) | — | done | 2026-04-15 |
 | task-20260415-005 | Dynamic tags from Notion | — | done | 2026-04-15 |
@@ -26,33 +27,9 @@ All completed and active task logs, newest first.
 
 ## Task Log Template
 
-When creating a new task file (`task-YYYYMMDD-NNN-brief-name.md`), use this structure:
+Use [TEMPLATE.md](TEMPLATE.md), the canonical task contract defined by [GOVERNANCE.md](../GOVERNANCE.md). New tasks use the lifecycle `proposed -> ready -> active -> implemented -> verified -> accepted`; historical `done` records remain unchanged.
 
-```markdown
-# task-YYYYMMDD-NNN: Brief Title
-- **Date:** YYYY-MM-DD
-- **Status:** planned | active | done | blocked
-- **Stage:** [which stage this belongs to]
-- **Requirements:** [V0-REQ-001, V0-REQ-002, etc.]
-
-## Goal
-[1-2 sentences: what does success look like?]
-
-## Plan
-1. [step]
-2. [step]
-
-## Log
-- [what actually happened, key decisions, commands run]
-
-## Files Changed
-- `path/to/file` — created/modified — why
-
-## Outcome
-[done/partial/blocked — summary + next steps if any]
-```
-
-Keep it under 30 lines. If a task takes <5 minutes, skip the log.
+Tiny work under five minutes may skip a task only under the exception defined in GOVERNANCE—not merely because it is brief.
 
 ---
 

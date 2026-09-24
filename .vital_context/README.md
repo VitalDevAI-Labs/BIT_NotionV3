@@ -1,45 +1,56 @@
-# BMAD Context Framework
+# Vital Context Framework
 
-A lightweight documentation template that makes any project AI-agent-friendly. One file in, one file out.
+Vital Context is the company framework for preserving product and engineering understanding across developers, AI providers, research, and implementation sessions.
 
-## Quick Start
+It is not merely a documentation folder. It is the repository-side memory and reconciliation system between:
 
-1. Copy this `.vital_context/` folder into your project root
-2. Fill in `CONTEXT.md` with your project details (name, stack, current stage, active tasks)
-3. Fill in `PRD.md` with your product requirements
-4. Customize `rules/` files for your stack's conventions
-
-Then start any AI session with:
-```
-Read .vital_context/CONTEXT.md. Task: [describe the work].
+```text
+External SOT and research
+        <-> requirements and architecture
+        <-> tasks, implementation, and verification
+        <-> decisions, deviations, and development history
 ```
 
-That's it. The agent reads context, does the work, logs what it did.
+## Entry Flow
+
+1. Root discovery files (`AGENTS.md`, `claude.md`, or another tool adapter) point here.
+2. Every participant reads `CONTEXT.md` first.
+3. `GOVERNANCE.md` defines authority, lifecycle, and completion gates.
+4. `state.json` identifies the current stage and active tasks.
+5. The routing table in `CONTEXT.md` identifies task-specific reading.
+6. Work ends only after verification and context reconciliation.
 
 ## Structure
 
-```
+```text
 .vital_context/
-├── CONTEXT.md          # THE entry point. Agents read this first and only this per task.
-├── README.md           # You're reading it.
-├── playbook.md         # Stage-level progress, acceptance criteria, hand-offs
-├── QuickPrompts.md     # Universal prompts for AI agents
-├── PRD.md              # Product requirements & detailed feature specs
-├── architecture.md     # Stack, schemas, data flows, API endpoints, decisions
-├── reference.md        # Commands, env vars, file structure, quick lookups
-├── backlog.md          # Future work & ideas
-├── bugs.md             # Known issues & resolutions
-├── rules/
-│   ├── structure.md    # File organization & naming conventions
-│   └── design.md       # UI/UX design system & components
-└── tasks/
-    ├── index.md        # Task registry + lightweight log template
-    └── task-*.md       # Individual task logs (~20 lines each)
+├── CONTEXT.md          # Human-readable entry and current dashboard
+├── GOVERNANCE.md       # Authority map, lifecycle, and completion contract
+├── state.json          # Machine-readable current lifecycle state
+├── CURRENT_PROJECT.md  # Audited observed implementation snapshot
+├── alignment.md        # External SOT vs requirements/code deviations
+├── PRD.md              # Product intent and requirements
+├── playbook.md         # Stage scope and acceptance criteria
+├── architecture.md     # Technical model, flows, and decisions
+├── bugs.md             # Defects and resolutions
+├── backlog.md          # Approved future work
+├── reference.md        # Commands, environment, and file lookup
+├── QuickPrompts.md     # Safe workflow prompts
+├── agents/             # Claude, Codex, and generic adapters
+├── rules/              # Code and design constraints
+├── scripts/            # Framework validation/automation
+└── tasks/              # Task records, index, and canonical template
 ```
 
-## Philosophy
+## Core Principles
 
-- **One file per task** — agents read `CONTEXT.md`, nothing else unless directed
-- **No ceremony** — task logs are ~20 lines, not 120
-- **You own it** — keep `CONTEXT.md` updated as your single source of truth
-- **Read on demand** — deeper docs (PRD, rules, bugs) are reference material, not prerequisites
+- **One owner per fact:** summaries link to canonical owners instead of duplicating truth.
+- **Provider-neutral memory:** Claude, Codex, humans, and other agents use the same records.
+- **Intent is preserved:** implementation drift is recorded in `alignment.md`, not hidden by rewriting history.
+- **Evidence before acceptance:** implemented work is not accepted work until verified and reconciled.
+- **History remains useful:** task and decision records explain how and why the product changed.
+- **Automation supports discipline:** `npm run context:check` catches lifecycle inconsistencies.
+
+## Framework Version
+
+The installed framework version is recorded in `state.json`. Provider adapter files contain procedures only and must never become competing project brains.

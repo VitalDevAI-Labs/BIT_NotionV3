@@ -2,6 +2,20 @@
 
 > Cheat sheet for common commands, environment setup, and key lookups. Agents read this to run the project without asking how.
 
+## Current State Reference
+
+- Framework governance: `GOVERNANCE.md`
+- Machine-readable lifecycle state: `state.json`
+- External SOT/implementation comparison: `alignment.md`
+- AI provider adapters: `agents/`
+- Context validator: `npm run context:check`
+- Read `CURRENT_PROJECT.md` for the audited current file state, known risks, and roadmap.
+- Current Git branch: `UI_Changes-V1.01`
+- Branch/release label: `V1.01`
+- Current `package.json` version: `0.0.0`
+- Snapshot commit: `0b59b62` (2026-09-20)
+- The file tree below is historical/target documentation and may not exactly match the working tree.
+
 ---
 
 ## File Structure

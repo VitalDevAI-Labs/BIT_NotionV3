@@ -13,6 +13,8 @@
 
 ## 2. Directory Layout
 
+The application layout below is complemented by the Vital Context framework layout documented in `.vital_context/README.md`. New framework directories such as `.vital_context/agents/` and `.vital_context/scripts/` are allowed when recorded there and in `reference.md`.
+
 ```
 src/
 ├── components/

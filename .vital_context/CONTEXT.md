@@ -1,19 +1,31 @@
 # Project Context
 
-<!-- Agents: Read this file FIRST and ONLY this per task. Read other docs only when directed. -->
+<!-- Humans and agents: read this file first, then follow GOVERNANCE.md and the routing table. -->
+
+> **Framework entry:** [GOVERNANCE.md](GOVERNANCE.md) defines authority and lifecycle. [state.json](state.json) owns current machine-readable status. Provider adapters live in [agents/](agents/README.md).
 
 ## Project
 
 - **Name:** `AI Bridge Unified`
 - **Description:** `Personal web app to save, search, and navigate AI prompts, chat links, and agent contexts across all AI platforms (ChatGPT, Claude, Gemini, Perplexity)`
-- **Stack:** `React 18 + TypeScript + Vite | Tailwind CSS + shadcn/ui | Notion API (database) | Vercel (hosting)`
+- **Stack:** `React 19 + TypeScript 6 + Vite 8 | Tailwind CSS 4 + shadcn/ui | Notion API (temporary database) | Vercel`
+
+## Current Handoff Snapshot
+
+- **Read next:** [CURRENT_PROJECT.md](CURRENT_PROJECT.md) for the audited code state, confirmed risks, and work sequence
+- **Git branch:** `UI_Changes-V1.01`
+- **Branch/release label:** `V1.01`
+- **Package version:** `0.0.0`
+- **Current product state:** Private Notion-backed prototype; not ready for public users
+- **Current priority:** Fix UX and core functionality first, then replace Notion with a real database and authentication
+- **Snapshot:** `2026-09-20` at commit `0b59b62`
 
 ## Current Stage
 
-- **Stage:** `Stage 3 - UI/UX Polish`
-- **Objective:** `Simplified filters, dynamic data, search accessibility, reduced visual clutter`
-- **Status:** `Complete`
-- **Exit Criteria:** `Dynamic categories, text-based tag search, search in header, Ctrl+K focus, type badges removed`
+- **Stage:** `Stage 3.5 - UX and Functional Stabilization`
+- **Objective:** `Correct CRUD state, synchronize forms, improve validation/search/filter feedback, add pagination, and establish a reliable UX foundation`
+- **Status:** `Active`
+- **Exit Criteria:** `Critical risks in CURRENT_PROJECT.md resolved, build/lint/tests pass, and core desktop/mobile flows are verified`
 
 ## Phases
 
@@ -23,19 +35,16 @@
 | 1 | Core Experience | Card grid view, type filters, search, add resource form, copy/open actions | done |
 | 2 | Enhancement | Edit/delete CRUD, advanced filters, quick actions, toasts | done |
 | 3 | UI/UX Polish | Simplified filters, dynamic categories, search in header, Ctrl+K, remove visual clutter | done |
+| 3.5 | UX & Functional Stabilization | Fix audited UX and CRUD reliability gaps before backend migration | planned |
 | 4 | Hardening & Launch | PWA manifest, offline cache, dark/light theme toggle, Vercel deploy, perf tuning | pending |
 
 ## Active Tasks
 
 | ID | Task | Status | Owner |
 |----|------|--------|-------|
-| task-20260415-007 | Categories as single-select (Notion schema fix) | done | Claude Code |
-| task-20260415-006 | Single source of truth for Notion schema (notion-schema.ts) | done | Claude Code |
-| task-20260415-005 | Dynamic tags from Notion (search, filter, manage from app) | done | Claude Code |
-| task-20260415-004 | Ctrl+K keyboard shortcut to focus search input | done | Claude Code |
-| task-20260415-003 | Move search to Header right, remove type badges from cards | done | Claude Code |
-| task-20260415-002 | Remove Model dropdown, Tags as text search (simplified FilterBar) | done | Claude Code |
-| task-20260415-001 | Dynamic categories from Notion (replaces hardcoded DEFAULT_CATEGORIES) | done | Claude Code |
+| -- | No active implementation task; select the next Stage 3.5 requirement | -- | -- |
+
+Completed work belongs in [tasks/index.md](tasks/index.md), not in this active-task dashboard.
 
 ## Key Decisions
 
@@ -69,11 +78,12 @@ Full decision log with alternatives in [architecture.md](architecture.md).
 
 **Read before you start:**
 - This file (done) — you know the stage, active tasks, and decisions
+- `GOVERNANCE.md` and `state.json` — authority, lifecycle, and current state
 - `tasks/index.md` — check if similar work was done before to avoid duplication
 - Then follow the rules below based on task type
 
 **Create before you implement:**
-- `tasks/task-YYYYMMDD-NNN-[name].md` — goal, plan, requirements being addressed
+- A task from `tasks/TEMPLATE.md` with expected behavior, acceptance criteria, requirements, and alignment references
 
 ---
 
@@ -129,6 +139,11 @@ Read these **only when needed**, not every task:
 
 | Doc | When to read |
 |-----|-------------|
+| [GOVERNANCE.md](GOVERNANCE.md) | Mandatory authority map, task lifecycle, completion gate, and context-impact rules |
+| [state.json](state.json) | Canonical current stage, version, active tasks, and reconciliation state |
+| [alignment.md](alignment.md) | Comparing external SOT/requirements with observed implementation and tradeoffs |
+| [agents/](agents/README.md) | Provider-specific workflow adapters; never project truth |
+| [CURRENT_PROJECT.md](CURRENT_PROJECT.md) | Current branch/version, implemented behavior, known risks, and handoff roadmap |
 | [playbook.md](playbook.md) | Phase-level progress, requirements, acceptance criteria, hand-offs |
 | [PRD.md](PRD.md) | Product vision, features, requirements registry (§7) |
 | [rules/structure.md](rules/structure.md) | Creating new files, directories, or modules |

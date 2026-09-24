@@ -229,6 +229,51 @@
 
 ---
 
+## Stage 3.5: UX and Functional Stabilization -- `active`
+
+**Window:** 2026-09-20 onward
+
+**Goals:**
+- Repair the shared Vital Context memory and reconciliation framework.
+- Fix confirmed CRUD, form-state, validation, filtering, and pagination risks.
+- Verify core desktop and mobile workflows before backend/auth migration.
+
+### Requirements
+
+| ID | Requirement | Priority | Status |
+|----|-------------|----------|--------|
+| S35-REQ-001 | Establish provider-neutral Vital Context governance and completion gates | P0 | accepted |
+| S35-REQ-002 | Reconcile resource state after create/update/delete | P0 | planned |
+| S35-REQ-003 | Reset and synchronize Add/Edit form state | P0 | planned |
+| S35-REQ-004 | Align category control with single-select persistence | P0 | planned |
+| S35-REQ-005 | Add resource-type-aware validation and action errors | P0 | planned |
+| S35-REQ-006 | Expand search and improve active-filter/empty-state feedback | P1 | planned |
+| S35-REQ-007 | Implement Notion pagination | P0 | planned |
+| S35-REQ-008 | Add regression coverage and verify responsive/accessibility flows | P1 | planned |
+
+**Key Tasks:** task-20260920-001; remaining tasks to be created after governance acceptance
+
+### Acceptance Criteria
+
+- [ ] Vital Context validator passes and all active work follows the completion gate.
+- [ ] Confirmed P0 functional risks in `CURRENT_PROJECT.md` are resolved and verified.
+- [ ] Core add, edit, delete, search, filter, copy, and open flows are verified.
+- [ ] SOT deviations are visible in `alignment.md` and owner decisions are recorded.
+
+### Definition of Done
+
+- [ ] All Stage 3.5 requirements are accepted.
+- [ ] Build, lint, automated tests, and context validation pass.
+- [ ] No critical/high bugs remain open.
+- [ ] Current project snapshot and architecture match the observed implementation.
+- [ ] Hand-off documents readiness for database/auth migration planning.
+
+**Risks:** Historical documentation drift; private Notion prototype security constraints.
+
+**Hand-off:** Pending.
+
+---
+
 ## Stage 4: Hardening & Launch -- `pending`
 
 **Window:** After Stage 3

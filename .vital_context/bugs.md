@@ -8,7 +8,14 @@
 
 | ID | Title | Severity | Status | Owner |
 |----|-------|----------|--------|-------|
-| -- | No bugs logged yet -- project is pre-implementation | -- | -- | -- |
+| BUG-001 | Created resource can appear twice after refetch | high | open | unassigned |
+| BUG-002 | Add/Edit forms can retain stale values | high | open | unassigned |
+| BUG-003 | Update/delete UI state is inconsistent during refetch | medium | open | unassigned |
+| BUG-004 | Category UI allows multiple values but persistence saves one | high | open | unassigned |
+| BUG-005 | Resource-type validation is incomplete | medium | open | unassigned |
+| BUG-006 | Notion query does not paginate beyond the first result page | high | open | unassigned |
+
+These issues were identified by source audit on 2026-09-20. Reproduction and resolution evidence must be added by their implementation tasks.
 
 ---
 
