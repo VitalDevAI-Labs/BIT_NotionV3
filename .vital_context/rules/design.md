@@ -128,6 +128,8 @@ All components from **shadcn/ui** customized with Tailwind. Installed via `npx s
 | **Open chat link** | Click "Open" button on Chat Link card | `window.open(url, '_blank')` → new tab |
 | **Add resource** | Click "+" or "Add" button in Header | Dialog slides in → form with type selector → submit → dialog closes → new card appears |
 | **Search** | Type in search input | Real-time filter (<100ms debounce) → grid updates → clear button appears when non-empty |
+| **Mobile search** | Tap search FAB above add FAB | Open and focus the mobile search panel; close button collapses it |
+| **Mobile back** | Browser/device Back from any app view | Return to the directory home; do not leave the app |
 | **Type filter** | Click tab (All / Chat Links / Prompts / Agents) | Active tab highlighted → grid filters → maintains search query |
 | **Quick actions (V2)** | Click three-dot icon on card | Dropdown: Edit, Delete, Copy, Open → action fires → dropdown closes |
 
@@ -142,6 +144,7 @@ All components from **shadcn/ui** customized with Tailwind. Installed via `npx s
 - **Screen reader:** Type badges include sr-only text ("Type: Chat Link")
 - **Motion:** Respect `prefers-reduced-motion` -- disable transitions when set
 - **Touch targets:** Minimum 44x44px on mobile (Stage 3)
+- **Mobile directory:** The records grid contains records only; do not insert a create card among records. Creation and search use separate stacked FABs.
 
 ---
 

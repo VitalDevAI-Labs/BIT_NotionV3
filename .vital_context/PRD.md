@@ -271,7 +271,7 @@
 | V3-REQ-007 | Build export feature -- download resources as CSV file | P3 | planned | |
 | V3-REQ-008 | Build import feature -- upload JSON file to create resources in Notion | P3 | planned | |
 | V3-REQ-009 | Add keyboard shortcuts: Ctrl+K (search focus), Ctrl+N (new resource), Esc (close dialog) | P3 | planned | |
-| V3-REQ-010 | Mobile responsive optimization -- touch targets (44px min), responsive grid breakpoints | P3 | planned | |
+| V3-REQ-010 | Mobile responsive optimization -- touch targets (44px min), records-only directory grid, search/add FABs, and Back returns home | P3 | active | Core mobile directory navigation implemented 2026-09-28; broader responsive verification remains |
 
 ### Stage 4: Launch
 

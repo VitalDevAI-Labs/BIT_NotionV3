@@ -42,6 +42,7 @@
 | task-20260406-007 | Fix transformPage crash: defensive property lookup with fallback keys | done | Claude Code |
 | task-20260928-001 | Finalize canonical Notion schema in project context | done | Codex |
 | task-20260928-002 | Align application CRUD with canonical Notion schema | active | Codex |
+| task-20260928-003 | Mobile directory actions and guarded back navigation | done | Codex |
 
 ## Key Decisions
 

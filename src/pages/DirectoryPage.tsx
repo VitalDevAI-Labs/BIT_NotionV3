@@ -14,6 +14,7 @@ interface DirectoryPageProps {
   onDeleteClick: (r: Resource) => void;
   searchQuery: string;
   refetchTrigger: number;
+  onSearchClick: () => void;
 }
 
 export function DirectoryPage({
@@ -23,6 +24,7 @@ export function DirectoryPage({
   onDeleteClick,
   searchQuery,
   refetchTrigger,
+  onSearchClick,
 }: DirectoryPageProps) {
   const { resources, loading, error, refetch } = useNotionResources();
 
@@ -133,13 +135,12 @@ export function DirectoryPage({
         resources={filtered}
         loading={loading}
         error={error}
-        onAdd={onAddClick}
         onView={onViewClick}
         onEdit={onEditClick}
         onDelete={handleDeleteClick}
       />
 
-      <FloatingAction onClick={onAddClick} />
+      <FloatingAction onAddClick={onAddClick} onSearchClick={onSearchClick} />
     </main>
   );
 }

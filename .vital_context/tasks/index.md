@@ -4,6 +4,7 @@ All completed and active task logs, newest first.
 
 | ID | Title | Req IDs | Status | Date |
 |----|-------|---------|--------|------|
+| task-20260928-003 | Mobile directory actions and guarded back navigation | V3-REQ-010 | done | 2026-09-28 |
 | task-20260928-002 | Align application CRUD with canonical Notion schema | V2-REQ-017 | active | 2026-09-28 |
 | task-20260928-001 | Finalize canonical Notion schema context | V0-REQ-001, V2-REQ-017 | done | 2026-09-28 |
 | task-20260408-010 | Type merge (Prompt→Agent) + Config Dialog | — | done | 2026-04-08 |

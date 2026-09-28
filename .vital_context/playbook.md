@@ -231,7 +231,7 @@
 | V3-REQ-007 | Export to CSV | P3 | planned |
 | V3-REQ-008 | Import from JSON | P3 | planned |
 | V3-REQ-009 | Keyboard shortcuts | P3 | planned |
-| V3-REQ-010 | Mobile responsive optimization | P3 | planned |
+| V3-REQ-010 | Mobile responsive optimization | P3 | active |
 
 **Key Tasks:** TBD -- generate when stage becomes active
 
@@ -243,7 +243,10 @@
 - [ ] Export produces valid JSON and CSV files
 - [ ] Import creates resources from JSON file
 - [ ] Keyboard shortcuts work (Ctrl+K, Ctrl+N, Esc)
-- [ ] Touch targets meet 44px minimum on mobile
+- [x] Mobile directory grid contains records only; creation remains available through the add FAB
+- [x] Search FAB appears above the add FAB and opens the mobile search panel
+- [x] Browser/device Back returns to the directory instead of exiting the app
+- [ ] All remaining mobile touch targets meet the 44px minimum
 
 ### Definition of Done
 - [ ] All P2 requirements (V3-REQ-001 through V3-REQ-005) status set to `done`

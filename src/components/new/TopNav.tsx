@@ -1,17 +1,15 @@
-import { useState } from 'react';
 import { Search, Bookmark, MessageSquare, Settings, Plus, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 interface TopNavProps {
   onAddClick: () => void;
   onSettingsClick: () => void;
   searchQuery: string;
   onSearchChange: (q: string) => void;
+  mobileSearchOpen: boolean;
+  onMobileSearchOpenChange: (open: boolean) => void;
 }
 
-export function TopNav({ onAddClick, onSettingsClick, searchQuery, onSearchChange }: TopNavProps) {
-  const [searchOpen, setSearchOpen] = useState(false);
-
+export function TopNav({ onAddClick, onSettingsClick, searchQuery, onSearchChange, mobileSearchOpen, onMobileSearchOpenChange }: TopNavProps) {
   return (
     <header
       className="sticky top-0 z-50 w-full border-b border-white/[0.04]"
@@ -69,18 +67,6 @@ export function TopNav({ onAddClick, onSettingsClick, searchQuery, onSearchChang
 
         {/* Right actions */}
         <div className="flex items-center gap-2">
-          {/* Mobile search toggle */}
-          <button
-            className={cn(
-              'md:hidden w-9 h-9 flex items-center justify-center rounded-lg transition-colors',
-              searchOpen ? 'bg-white/5' : 'hover:bg-white/5'
-            )}
-            style={{ color: '#9A9BA0' }}
-            onClick={() => setSearchOpen((v) => !v)}
-          >
-            <Search className="w-5 h-5" />
-          </button>
-
           <button
             className="hidden md:flex w-9 h-9 items-center justify-center rounded-lg transition-colors hover:bg-white/5"
             style={{ color: '#9A9BA0' }}
@@ -140,7 +126,7 @@ export function TopNav({ onAddClick, onSettingsClick, searchQuery, onSearchChang
       </div>
 
       {/* Mobile search panel */}
-      {searchOpen && (
+      {mobileSearchOpen && (
         <div className="md:hidden px-4 pb-3 border-t border-white/[0.04]">
           <div className="relative mt-3">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: '#9A9BA0' }} />
@@ -150,7 +136,7 @@ export function TopNav({ onAddClick, onSettingsClick, searchQuery, onSearchChang
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder="Search agents, tags, or description..."
-              className="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl outline-none"
+              className="w-full pl-9 pr-12 py-2.5 text-sm rounded-xl outline-none"
               style={{
                 background: 'rgba(255,255,255,0.03)',
                 border: '1px solid rgba(168,85,247,0.4)',
@@ -158,6 +144,15 @@ export function TopNav({ onAddClick, onSettingsClick, searchQuery, onSearchChang
                 boxShadow: '0 0 0 3px rgba(168,85,247,0.08)',
               }}
             />
+            <button
+              type="button"
+              onClick={() => onMobileSearchOpenChange(false)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-lg"
+              style={{ color: '#9A9BA0' }}
+              aria-label="Close search"
+            >
+              <X className="w-4 h-4" />
+            </button>
           </div>
         </div>
       )}

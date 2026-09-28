@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
 import type { Resource } from '@/types/resource';
 import { hasCredentials } from '@/lib/notion';
@@ -16,6 +16,7 @@ export function App() {
   const [page, setPage] = useState<Page>(() => hasCredentials() ? 'directory' : 'settings');
   const [detailResource, setDetailResource] = useState<Resource | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -26,9 +27,41 @@ export function App() {
   const [refetchTrigger, setRefetchTrigger] = useState(0);
   function triggerRefetch() { setRefetchTrigger((n) => n + 1); }
 
+  useEffect(() => {
+    const homeState = { agentOsPage: 'directory' };
+    window.history.replaceState(homeState, '');
+    window.history.pushState(homeState, '');
+
+    function handlePopState() {
+      setPage('directory');
+      setDetailResource(null);
+      setMobileSearchOpen(false);
+      setAddDialogOpen(false);
+      setEditDialogOpen(false);
+      setDeleteDialogOpen(false);
+      window.history.pushState(homeState, '');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  function navigateTo(nextPage: Exclude<Page, 'directory'>) {
+    window.history.pushState({ agentOsPage: nextPage }, '');
+    setPage(nextPage);
+  }
+
+  function goHome() {
+    setPage('directory');
+    setDetailResource(null);
+    setMobileSearchOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   function handleViewClick(r: Resource) {
     setDetailResource(r);
-    setPage('detail');
+    navigateTo('detail');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -48,10 +81,10 @@ export function App() {
     triggerRefetch();
   }
 
-  function handleDeleted(_id: string) {
+  function handleDeleted() {
     setDeleteDialogOpen(false);
     // Navigate back to directory after delete
-    setPage('directory');
+    goHome();
     setDetailResource(null);
     triggerRefetch();
   }
@@ -67,7 +100,8 @@ export function App() {
   }
 
   function handleSettingsClick() {
-    setPage((p) => p === 'settings' ? 'directory' : 'settings');
+    if (page === 'settings') goHome();
+    else navigateTo('settings');
   }
 
   return (
@@ -76,10 +110,12 @@ export function App() {
         onAddClick={() => setAddDialogOpen(true)}
         onSettingsClick={handleSettingsClick}
         searchQuery={searchQuery}
-        onSearchChange={(q) => {
+        mobileSearchOpen={mobileSearchOpen}
+        onMobileSearchOpenChange={setMobileSearchOpen}
+          onSearchChange={(q) => {
           setSearchQuery(q);
           // Jump back to directory when searching from detail page
-          if (page === 'detail') setPage('directory');
+          if (page === 'detail') goHome();
         }}
       />
 
@@ -91,13 +127,14 @@ export function App() {
           onDeleteClick={handleDeleteClick}
           searchQuery={searchQuery}
           refetchTrigger={refetchTrigger}
+          onSearchClick={() => setMobileSearchOpen(true)}
         />
       )}
 
       {page === 'detail' && detailResource && (
         <AgentDetailPage
           resource={detailResource}
-          onBack={() => setPage('directory')}
+          onBack={goHome}
           onEdit={handleEditClick}
           onDelete={handleDeleteClick}
         />
