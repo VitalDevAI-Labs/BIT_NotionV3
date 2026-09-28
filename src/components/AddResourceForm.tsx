@@ -154,7 +154,7 @@ export function AddResourceForm({ onSubmit, loading, error, onCancel, initialVal
         <ImprovedMultiSelect
           options={DEFAULT_CATEGORIES}
           value={form.categories ?? []}
-          onChange={(v) => set('categories', v)}
+          onChange={(value) => set('categories', value)}
           placeholder="Add categories..."
         />
       </div>

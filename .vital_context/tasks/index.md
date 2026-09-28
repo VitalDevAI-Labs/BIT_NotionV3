@@ -4,6 +4,8 @@ All completed and active task logs, newest first.
 
 | ID | Title | Req IDs | Status | Date |
 |----|-------|---------|--------|------|
+| task-20260928-002 | Align application CRUD with canonical Notion schema | V2-REQ-017 | active | 2026-09-28 |
+| task-20260928-001 | Finalize canonical Notion schema context | V0-REQ-001, V2-REQ-017 | done | 2026-09-28 |
 | task-20260408-010 | Type merge (Prompt→Agent) + Config Dialog | — | done | 2026-04-08 |
 | task-20260406-009 | Stage 2: advanced filters + quick menu | V2-REQ-005, V2-REQ-006, V2-REQ-007, V2-REQ-008, V2-REQ-012, V2-REQ-014 | done | 2026-04-06 |
 | task-20260406-008 | Stage 2: toast system + CRUD hooks + dialogs | V2-REQ-001, V2-REQ-002, V2-REQ-003, V2-REQ-004, V2-REQ-013 | done | 2026-04-06 |

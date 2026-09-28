@@ -129,6 +129,24 @@ vercel                      # Deploy to Vercel (if CLI installed)
 2. **Database ID:** Open the Notion database → Copy ID from URL: `notion.so/{workspace}/{DATABASE_ID}?v=...`
 3. **Connect integration:** In Notion, open database → three-dot menu → Connections → Add your integration
 
+### Canonical Notion Database Properties
+
+Property names are case-sensitive. Configure the database exactly as follows:
+
+| Property | Notion type | Notes |
+|----------|-------------|-------|
+| `Title` | Title | Required |
+| `Type` | Select | Options created by the app: `Agent`, `Chat Link` |
+| `Description` | Text | Optional |
+| `Categories` | Multi-select | Optional; multiple categories allowed |
+| `Tags` | Multi-select | Optional; multiple tags allowed |
+| `Url` | URL | Required for Chat Link; optional for Agent |
+| `PromptText` | Text | Agent instructions/context |
+| `Model` | Select | Optional |
+| `IsPopular` | Checkbox | Optional; defaults false |
+
+Do not add custom `Created` or `Last Edited` properties. The application uses Notion page metadata. Legacy `Prompt` type records may be read as `Agent`, but new records must use only `Agent` or `Chat Link`.
+
 **Usage in code:**
 ```typescript
 const NOTION_API_KEY = import.meta.env.VITE_NOTION_API_KEY;
@@ -144,6 +162,7 @@ const DATABASE_ID = import.meta.env.VITE_NOTION_DATABASE_ID;
 | App entry point | `src/main.tsx` |
 | Root component | `src/App.tsx` |
 | Notion API client | `src/lib/notion.ts` |
+| Canonical Notion property mapping | `src/lib/notion-schema.ts` (required by V2-REQ-017; restore during implementation) |
 | Type definitions | `src/types/resource.ts`, `src/types/notion.ts` |
 | Constants (categories, models) | `src/lib/constants.ts` |
 | shadcn/ui primitives | `src/components/ui/*.tsx` |

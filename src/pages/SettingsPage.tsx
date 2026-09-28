@@ -4,21 +4,17 @@ import {
   Database, Key, RefreshCw, ChevronRight, Info,
 } from 'lucide-react';
 import { queryResources, saveCredentials } from '@/lib/notion';
+import { NOTION_FIELDS } from '@/lib/notion-schema';
 import { toast } from 'sonner';
 
 type TestStatus = 'idle' | 'testing' | 'success' | 'error';
 
-const FIELD_MAPPING = [
-  { field: 'Title', type: 'Title', required: true, description: 'Resource name — used in search and card header' },
-  { field: 'Type', type: 'Select', required: true, description: 'Values: "Chat Link" or "Agent"' },
-  { field: 'Description', type: 'Text', required: false, description: 'Short description shown on the card' },
-  { field: 'Categories', type: 'Multi-select', required: false, description: 'e.g. Code Assistant, Research' },
-  { field: 'Tags', type: 'Multi-select', required: false, description: 'e.g. React, Python, Security' },
-  { field: 'URL', type: 'URL', required: false, description: 'Chat link URL or agent reference link' },
-  { field: 'Prompt Text', type: 'Text (long)', required: false, description: 'Agent system prompt / context' },
-  { field: 'Model', type: 'Select', required: false, description: 'e.g. GPT-4, Claude Sonnet' },
-  { field: 'IsPopular', type: 'Checkbox', required: false, description: 'Marks agent as active / frequently used' },
-];
+const FIELD_MAPPING = NOTION_FIELDS.map((field) => ({
+  field: field.name,
+  type: field.type,
+  required: field.required,
+  description: field.description,
+}));
 
 function SectionCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (

@@ -181,6 +181,33 @@
 
 ---
 
+## Stage 2.5: Notion Schema Stabilization -- `active`
+
+**Window:** 2026-09-28 onward
+
+**Goal:** Restore reliable Notion create/update behavior before continuing product polish.
+
+### Requirements
+
+| ID | Requirement | Priority | Status |
+|----|-------------|----------|--------|
+| V2-REQ-017 | Canonical Notion schema, schema-aware forms/API, validation, and verified CRUD | P0 | active |
+
+### Acceptance Criteria
+
+- [x] Exact canonical property names and Notion types are documented.
+- [ ] All reads and writes use a single schema constant module.
+- [x] Category input supports multiple values and writes a Notion `multi_select`.
+- [ ] Agent and Chat Link validation rules are enforced.
+- [ ] Connection testing validates property presence and types, not only query access.
+- [ ] Real create and update operations succeed against the configured database.
+
+**Canonical mapping:** `Title` (title), `Type` (select), `Description` (rich_text), `Categories` (multi_select), `Tags` (multi_select), `Url` (url), `PromptText` (rich_text), `Model` (select), `IsPopular` (checkbox). Names and types are centralized in `src/lib/notion-schema.ts`.
+
+**Hand-off:** Pending implementation and real-database CRUD verification.
+
+---
+
 ## Stage 3: Polish & Hardening -- `pending`
 
 **Window:** Week 3+

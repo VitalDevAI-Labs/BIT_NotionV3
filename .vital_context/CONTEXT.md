@@ -10,10 +10,10 @@
 
 ## Current Stage
 
-- **Stage:** `Stage 2 - Enhancement`
-- **Objective:** `CRUD (edit/delete), advanced filters, quick actions, toast notifications`
-- **Status:** `Complete`
-- **Exit Criteria:** `Full edit/delete, category/tag/model/popular filters, quick menu, toasts on all actions`
+- **Stage:** `Stage 2.5 - Notion Schema Stabilization`
+- **Objective:** `Restore reliable create/update behavior by aligning the application with one canonical Notion schema`
+- **Status:** `Active`
+- **Exit Criteria:** `Schema constants, reads, writes, forms, validation, and setup guidance match the canonical schema; create and update are verified against the real Notion database`
 
 ## Phases
 
@@ -22,6 +22,7 @@
 | 0 | Foundations | Project scaffolding, Notion DB creation, API client, Tailwind + shadcn/ui setup | done |
 | 1 | Core Experience | Card grid view, type filters, search, add resource form, copy/open actions | done |
 | 2 | Enhancement | Edit/delete CRUD, advanced filters, quick actions, toasts | done |
+| 2.5 | Notion Schema Stabilization | Canonicalize Notion property names/types and restore verified create/update flows | active |
 | 3 | Polish & Hardening | PWA manifest, offline cache, dark/light theme toggle, export/import | pending |
 | 4 | Launch | Vercel deployment, real-data validation, bug fixes, performance tuning | pending |
 
@@ -39,6 +40,8 @@
 | task-20260406-009 | Stage 2: filters (category, tags, model, popular), quick menu | done | Claude Code |
 | task-20260408-010 | Stage 2 fix: Prompt→Agent type merge + runtime Config Dialog | done | Claude Code |
 | task-20260406-007 | Fix transformPage crash: defensive property lookup with fallback keys | done | Claude Code |
+| task-20260928-001 | Finalize canonical Notion schema in project context | done | Codex |
+| task-20260928-002 | Align application CRUD with canonical Notion schema | active | Codex |
 
 ## Key Decisions
 
@@ -52,6 +55,13 @@
 | 6 | Component library | shadcn/ui | Lightweight, Tailwind-native, copy-paste customizable |
 | 7 | State management | React hooks (useState, useEffect) | App is simple enough -- no Redux/Zustand needed |
 | 8 | Build tool | Vite | Fast HMR, minimal config, TypeScript out of the box |
+| 9 | Canonical Notion schema | `Title`, `Type`, `Description`, `Categories`, `Tags`, `Url`, `PromptText`, `Model`, `IsPopular` | Matches the previously verified database; exact names and property types prevent create/update failures |
+
+### Canonical Notion Schema
+
+Property names are case-sensitive. `Categories` and `Tags` are both Notion `multi_select` properties. The only values created for `Type` are `Agent` and `Chat Link`; legacy `Prompt` records may be read as `Agent` but must not be created. Property names and Notion types are centralized in `src/lib/notion-schema.ts`.
+
+See [architecture.md](architecture.md#notion-database-ai-resources) for the authoritative mapping and conditional validation rules.
 
 Full decision log with alternatives in [architecture.md](architecture.md).
 

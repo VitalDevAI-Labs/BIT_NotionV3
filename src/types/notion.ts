@@ -20,10 +20,10 @@ export interface NotionPage {
     Description: { rich_text: NotionRichText[] };
     Categories: { multi_select: NotionSelectOption[] };
     Tags: { multi_select: NotionSelectOption[] };
-    URL: { url: string | null };
-    'Prompt Text': { rich_text: NotionRichText[] };
+    Url: { url: string | null };
+    PromptText: { rich_text: NotionRichText[] };
     Model: { select: NotionSelectOption | null };
-    'Is Popular': { checkbox: boolean };
+    IsPopular: { checkbox: boolean };
   };
 }
 

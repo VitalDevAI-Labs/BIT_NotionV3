@@ -207,7 +207,7 @@
 
 | ID | Requirement | Priority | Status | Notes |
 |----|-------------|----------|--------|-------|
-| V0-REQ-001 | Create Notion database with unified schema: Title (title), Type (select: Chat Link/Prompt/Agent), Description (text), Categories (multi-select), Tags (multi-select), URL (url), Prompt Text (text), Model (select), Is Popular (checkbox), Created (created_time), Last Edited (last_edited_time) | P0 | planned | Manual step in Notion UI |
+| V0-REQ-001 | Create Notion database with canonical schema: Title (title), Type (select: Chat Link/Agent), Description (text), Categories (multi-select), Tags (multi-select), Url (url), PromptText (text), Model (select), IsPopular (checkbox) | P0 | done | Exact names are case-sensitive; timestamps use built-in page metadata |
 | V0-REQ-002 | Scaffold React 18 + TypeScript + Vite project with working dev server | P0 | planned | `npm create vite@latest` |
 | V0-REQ-003 | Install and configure Tailwind CSS v3 + PostCSS + autoprefixer | P0 | planned | |
 | V0-REQ-004 | Install and configure shadcn/ui with at least Button, Input, Card, Badge, Dialog, Select, Checkbox components | P0 | planned | |
@@ -256,6 +256,7 @@
 | V2-REQ-012 | Build QuickActionsMenu component -- three-dot dropdown on each card: Edit, Delete, Copy, Open | P2 | planned | |
 | V2-REQ-013 | Add toast notification system -- feedback for copy, save, delete, error actions | P2 | planned | shadcn Toast |
 | V2-REQ-014 | Ensure all filters work in combination (type + category + tags + model + popular + search) | P1 | planned | |
+| V2-REQ-017 | Restore the canonical Notion schema contract across reads, writes, types, forms, settings guidance, and schema validation; verify create/update against the real database | P0 | active | Canonical mapping finalized 2026-09-28; implementation pending |
 
 ### Stage 3: Polish & Hardening
 

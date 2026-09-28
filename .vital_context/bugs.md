@@ -8,7 +8,18 @@
 
 | ID | Title | Severity | Status | Owner |
 |----|-------|----------|--------|-------|
-| -- | No bugs logged yet -- project is pre-implementation | -- | -- | -- |
+| BUG-001 | Create/update fails when application property names or types differ from Notion | critical | in-progress | Codex |
+
+### BUG-001: Notion schema drift prevents create/update
+
+- **Reported:** 2026-09-28
+- **Requirement:** V2-REQ-017
+- **Expected:** Add and Edit serialize fields using the database's exact property names and Notion types.
+- **Actual:** The branch sent incorrect property names (`URL`, `Prompt Text`) and temporarily documented Categories as `select`; the live database expects `Url`, `PromptText`, and Categories as `multi_select`.
+- **Root cause:** Property names and Notion types were duplicated across API code, TypeScript declarations, UI controls, and documentation.
+- **Implementation:** Centralized names and types in `src/lib/notion-schema.ts`; aligned API reads/writes, Categories multi-select behavior, resource types, and Settings guidance on 2026-09-28.
+- **Resolution target:** Verify real create and update operations, then add database-schema validation to the connection test before closing.
+- **Task log:** `tasks/task-20260928-002-notion-schema-implementation.md`
 
 ---
 

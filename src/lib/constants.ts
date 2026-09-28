@@ -30,12 +30,10 @@ export const MODEL_OPTIONS: string[] = [
 
 export const TYPE_COLORS: Record<ResourceType, string> = {
   'Chat Link': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-  'Prompt': 'bg-violet-500/20 text-violet-400 border-violet-500/30',
   'Agent': 'bg-violet-500/20 text-violet-400 border-violet-500/30',
 };
 
 export const TYPE_BORDER_ACCENT: Record<ResourceType, string> = {
   'Chat Link': 'border-l-blue-500',
-  'Prompt': 'border-l-violet-500',
   'Agent': 'border-l-violet-500',
 };

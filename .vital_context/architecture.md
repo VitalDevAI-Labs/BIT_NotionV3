@@ -80,16 +80,18 @@ Property-level schema (maps directly to Notion database configuration):
 | Property | Notion Type | Required | Options / Format |
 |----------|-------------|----------|------------------|
 | Title | title | Yes | Free text |
-| Type | select | Yes | `Chat Link`, `Prompt`, `Agent` |
+| Type | select | Yes | `Chat Link`, `Agent` (`Prompt` is legacy read-only and maps to Agent) |
 | Description | rich_text | No | Free text |
-| Categories | multi_select | No | Code Assistant, Creative Writing, Data Analysis, English Expert, Formatters, General Experts, Research, Tools |
+| Categories | multi_select | No | One or more: Code Assistant, Creative Writing, Data Analysis, English Expert, Formatters, General Experts, Research, Tools |
 | Tags | multi_select | No | Freeform (React, Python, API, Debug, etc.) |
-| URL | url | No | Valid URL (for Chat Links) |
-| Prompt Text | rich_text | No | Long text (for Prompts and Agents) |
+| Url | url | Conditional | Required for Chat Link; optional for Agent |
+| PromptText | rich_text | Conditional | Agent instructions/context; an Agent requires PromptText or Url |
 | Model | select | No | GPT-4, GPT-4 Turbo, GPT-3.5, Claude Opus, Claude Sonnet, Claude Haiku, Gemini Pro, Gemini Ultra, Perplexity, Other |
-| Is Popular | checkbox | No | true/false |
-| Created | created_time | Auto | ISO timestamp |
-| Last Edited | last_edited_time | Auto | ISO timestamp |
+| IsPopular | checkbox | No | true/false |
+
+`created_time` and `last_edited_time` are built-in page metadata returned by Notion. Do not create duplicate database properties for them.
+
+Exact property names and types above are canonical and case-sensitive. All API reads and writes must reference a single schema constant module. A connection test is incomplete unless it retrieves the database schema and reports missing properties or type mismatches.
 
 ### TypeScript Interface: `Resource`
 
@@ -98,9 +100,9 @@ Property-level schema (maps directly to Notion database configuration):
 export interface Resource {
   id: string;                                    // Notion page ID
   title: string;                                 // Title property
-  type: 'Chat Link' | 'Prompt' | 'Agent';       // Type select
+  type: 'Chat Link' | 'Agent';                  // New records; legacy Prompt maps to Agent
   description: string;                           // Rich text → plain text
-  categories: string[];                          // Multi-select values
+  categories: string[];                          // Notion multi-select values
   tags: string[];                                // Multi-select values
   url?: string;                                  // URL property (Chat Links)
   promptText?: string;                           // Rich text → plain text (Prompts/Agents)
@@ -110,7 +112,7 @@ export interface Resource {
   lastEditedAt: string;                          // ISO timestamp
 }
 
-export type ResourceType = 'Chat Link' | 'Prompt' | 'Agent';
+export type ResourceType = 'Chat Link' | 'Agent';
 export type FilterType = 'All' | ResourceType;
 ```
 
@@ -146,10 +148,10 @@ export interface NotionPage {
     Description: { rich_text: Array<{ plain_text: string }> };
     Categories: { multi_select: Array<{ name: string }> };
     Tags: { multi_select: Array<{ name: string }> };
-    URL: { url: string | null };
-    'Prompt Text': { rich_text: Array<{ plain_text: string }> };
+    Url: { url: string | null };
+    PromptText: { rich_text: Array<{ plain_text: string }> };
     Model: { select: { name: string } | null };
-    'Is Popular': { checkbox: boolean };
+    IsPopular: { checkbox: boolean };
   };
 }
 
@@ -279,6 +281,7 @@ Content-Type: application/json
 | 8 | Auth | None (API key in env/localStorage) | OAuth, Notion OAuth flow | Single-user personal app; API key is simplest secure-enough approach |
 | 9 | Search | Client-side string matching | Notion API filter, Algolia | Fast for small datasets (<500 resources); no additional service needed |
 | 10 | Styling approach | Dark mode first | Light mode first | User preference; matches AI tool aesthetics |
+| 11 | Notion schema contract | Exact canonical names and types in `src/lib/notion-schema.ts`; Categories and Tags are multi-select | Duplicated property strings and types across files | Matches the live database and makes future schema changes local and diagnosable |
 
 ---
 
